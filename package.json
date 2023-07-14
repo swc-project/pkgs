@@ -1,0 +1,6 @@
+{
+  "name": "swc-extra-packages-workspace",
+  "packageManager": "pnpm@8.6.7",
+  "private": true,
+  "scripts": {}
+}
