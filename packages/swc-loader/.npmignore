@@ -1,0 +1,9 @@
+.vscode
+node_modules/
+example/
+package-lock.json
+*.log
+yarn.lock
+example-config/
+example-src-dir/
+example-sync/
