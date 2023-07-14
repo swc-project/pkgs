@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "APACHE-2.0"
+  "license": "APACHE-2.0",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
 }
