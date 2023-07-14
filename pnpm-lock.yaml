@@ -28,6 +28,10 @@ importers:
         version: 2.8.8
 
   packages/css-loader:
+    dependencies:
+      '@swc/css':
+        specifier: ^0.0.20
+        version: 0.0.20
     devDependencies:
       typescript:
         specifier: ^5.1.6
@@ -345,6 +349,142 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@swc/css-android-arm-eabi@0.0.20:
+    resolution: {integrity: sha512-z6cSxNTaahNYWhil14bxQY3sKiS0m0iLL5c/YQU6zs3Di3PpkpZphl76Mzifw5RJm5+GcxU1+3yOnJWHFcnOHQ==}
+    engines: {node: '>=10'}
+    cpu: [arm]
+    os: [android]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-android-arm64@0.0.20:
+    resolution: {integrity: sha512-EfysJoC5jiFKC7U4HGH6698+HJjMZPur1HTOpxm92BcRilc6Ji1LfaAItrm9BA2ADIPhd9oWndI1h6KCD1vhHw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-darwin-arm64@0.0.20:
+    resolution: {integrity: sha512-l/SwYaYCwdU5ZrsDRZdb9MzZnxpSF5EQJ4ztKjFOLAuLKd+RYzYvjh0Jv28oefCJ7VCRfIFFPzhgwFZ3ujlpWw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-darwin-x64@0.0.20:
+    resolution: {integrity: sha512-opIALntwRPedib/QSNuPNT0mbEahXa7WPdcD5847kOQisIBduoWBINSR/bxgcjpE3sYU58GpMM6Q2f/22fX6kw==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-freebsd-x64@0.0.20:
+    resolution: {integrity: sha512-LqdXOR1jUNg+ptXKV3oyX0ZKsSYTquaSNoirLnDU/Gl+4IA9qaG7ps9iqfixjwmHyc6A1EcfI73WyjjYPlszUw==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-linux-arm-gnueabihf@0.0.20:
+    resolution: {integrity: sha512-8RQVGvfbYvl1Z5hs3m3gftaY9YykA2A3cSuVFrTb+B74dpdwnL1PkitKvdKRLLt0LWgQFseljUsgtDYyeyCn3A==}
+    engines: {node: '>=10'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-linux-arm64-gnu@0.0.20:
+    resolution: {integrity: sha512-rGAA+7bc7s3tPfcicqwBUOlzOeZxc/Z8wQY455B+nQGOO3qj5L7P//ftXgnDlXWTKYq/XrpImjZGoIkD6tE/1g==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-linux-arm64-musl@0.0.20:
+    resolution: {integrity: sha512-hdGVrgfxoKoRH/CXpezS1g6pPZDTFz1EbHbK/kRMEAiB4BWjoIlrdeDnIxn4Gz9RNkupAkGK/41WDm0XR2g+mw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-linux-x64-gnu@0.0.20:
+    resolution: {integrity: sha512-HnAgJKEA74L3GI8EWD6l5BmksCQLmmOLbPpMBoNtluh0AA5gbnB4uB3Quh5xZqHDmqjFUEyZR3yoXFMhB+oVlg==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-linux-x64-musl@0.0.20:
+    resolution: {integrity: sha512-W6mRvjMivjwT6ywn942nk3bQ/ItIJCbXqHhH6LB+X6LntYjdXv6O8XZxqbv+UGIFhkKN/lze0exR3KVyGvltHQ==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-win32-arm64-msvc@0.0.20:
+    resolution: {integrity: sha512-GiXSHZfQY8VZ9tZm5VCvlCoIMqh2grSKTgnhANOAEuaGSt2j9K6DPnHSIrl7tO42KftAZmExFhQiHHC9zMhXxw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-win32-ia32-msvc@0.0.20:
+    resolution: {integrity: sha512-p6Y65JPi28Y7OJbjbR1HLzoKS/48WS3IFNgpIvTSV4l43IwtjDchyCZsJ04gisrJ3H8tIx6Ct7GhXNEhLHj3ZA==}
+    engines: {node: '>=10'}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css-win32-x64-msvc@0.0.20:
+    resolution: {integrity: sha512-tkp2QvxqPRQch+BXSMd6HvE3nFqjamMjuNa0aBvzmNafF0SFywKXi6zIBSmwyX59nxpH+++D2zQdP6uVGH6aBg==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/css@0.0.20:
+    resolution: {integrity: sha512-SYmayNGfobESZtYx28WO6y18yTZ1J/tkPnDTHFNBW663fIMhzkkXZJVH5o4gCPkhjyc/GBonsjgFE3Y7OGr7sg==}
+    engines: {node: '>=14'}
+    optionalDependencies:
+      '@swc/css-android-arm-eabi': 0.0.20
+      '@swc/css-android-arm64': 0.0.20
+      '@swc/css-darwin-arm64': 0.0.20
+      '@swc/css-darwin-x64': 0.0.20
+      '@swc/css-freebsd-x64': 0.0.20
+      '@swc/css-linux-arm-gnueabihf': 0.0.20
+      '@swc/css-linux-arm64-gnu': 0.0.20
+      '@swc/css-linux-arm64-musl': 0.0.20
+      '@swc/css-linux-x64-gnu': 0.0.20
+      '@swc/css-linux-x64-musl': 0.0.20
+      '@swc/css-win32-arm64-msvc': 0.0.20
+      '@swc/css-win32-ia32-msvc': 0.0.20
+      '@swc/css-win32-x64-msvc': 0.0.20
+    dev: false
 
   /@taplo/cli@0.5.2:
     resolution: {integrity: sha512-6Sg10lt0fV9aHHWPycz4gzIsUodZihu68zAFZGWq0UDq+Gif2KMrAvNwjMbe+ZUKbnTJjvqJZcPvE4+UEyanAQ==}
