@@ -13,7 +13,7 @@ export interface LoaderOptions {
     cssModules?: CssModuleTransformOptions;
 }
 
-export default function loader(
+export default async function loader(
     this: webpack.LoaderContext<LoaderOptions>,
     source: Buffer,
     inputSourceMap: any
@@ -38,31 +38,34 @@ export default function loader(
         minify: false,
     };
 
+    const importCode = getImportCode(imports, options);
+
+    let moduleCode;
+
     try {
-        if (sync) {
-            const output = transformSync(source, transformOptions);
-            callback(
-                null,
-                output.code,
-                parseMap ? JSON.parse(output.map!) : output.map
-            );
-        } else {
-            transform(source, transformOptions).then(
-                (output) => {
-                    callback(
-                        null,
-                        output.code,
-                        parseMap ? JSON.parse(output.map!) : output.map
-                    );
-                },
-                (err) => {
-                    callback(err);
-                }
-            );
-        }
-    } catch (e: any) {
-        callback(e);
+        moduleCode = getModuleCode(
+            result,
+            api,
+            replacements,
+            options,
+            isTemplateLiteralSupported,
+            this
+        );
+    } catch (error) {
+        callback(error);
+
+        return;
     }
+
+    const exportCode = getExportCode(
+        exports,
+        replacements,
+        needToUseIcssPlugin,
+        options,
+        isTemplateLiteralSupported
+    );
+
+    callback(null, `${importCode}${moduleCode}${exportCode}`);
 }
 
 export const raw = true;
