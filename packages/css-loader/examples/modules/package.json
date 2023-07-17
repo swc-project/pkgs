@@ -12,6 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@swc/css": "^0.0.25",
         "@swc/css-loader": "workspace:^",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",

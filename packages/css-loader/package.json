@@ -12,7 +12,7 @@
     },
     "keywords": [],
     "devDependencies": {
-        "@swc/css": "^0.0.24",
+        "@swc/css": "^0.0.25",
         "@types/node": "^20.4.2",
         "turbo": "^1.10.7",
         "typescript": "^5.1.6",
