@@ -5,7 +5,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build": "webpack && cp public/* build",
+        "build": "(cd ../.. && pnpm build) && webpack && cp public/* build",
         "start": "ecstatic build --port 3000"
     },
     "keywords": [],
