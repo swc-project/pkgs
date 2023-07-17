@@ -1,21 +1,25 @@
 {
-  "name": "@swc/css-loader",
-  "version": "0.0.1",
-  "description": "CSS Loader for webpack using @swc/css",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc",
-    "test": "jest"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "APACHE-2.0",
-  "devDependencies": {
-    "turbo": "^1.10.7",
-    "typescript": "^5.1.6"
-  },
-  "dependencies": {
-    "@swc/css": "^0.0.20"
-  },
-  "type": "module"
+    "name": "@swc/css-loader",
+    "version": "0.0.1",
+    "description": "CSS Loader for webpack using @swc/css",
+    "repository": "https://github.com/swc-project/pkgs",
+    "author": "강동윤 <kdy1997.dev@gmail.com>",
+    "license": "APACHE-2.0",
+    "main": "lib/index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest"
+    },
+    "keywords": [],
+    "devDependencies": {
+        "@swc/css": "^0.0.24",
+        "turbo": "^1.10.7",
+        "typescript": "^5.1.6",
+        "webpack": "^5.69.1"
+    },
+    "peerDependencies": {
+        "@swc/css": "^0.0.24",
+        "webpack": "^5.0.0"
+    },
+    "type": "module"
 }
