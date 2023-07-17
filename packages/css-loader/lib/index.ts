@@ -15,7 +15,7 @@ export interface LoaderOptions {
 
 export default function loader(
     this: webpack.LoaderContext<LoaderOptions>,
-    source: string,
+    source: Buffer,
     inputSourceMap: any
 ) {
     // Make the loader async
@@ -64,3 +64,5 @@ export default function loader(
         callback(e);
     }
 }
+
+export const raw = true;
