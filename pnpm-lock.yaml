@@ -44,6 +44,9 @@ importers:
 
   packages/css-loader/examples/modules:
     dependencies:
+      '@swc/css-loader':
+        specifier: workspace:^
+        version: link:../..
       react:
         specifier: ^18.2.0
         version: 18.2.0
