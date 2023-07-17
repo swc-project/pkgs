@@ -38,6 +38,23 @@ export default async function loader(
         minify: false,
     };
 
+    let isTemplateLiteralSupported = false;
+
+    if (
+        // eslint-disable-next-line no-underscore-dangle
+        this._compilation &&
+        // eslint-disable-next-line no-underscore-dangle
+        this._compilation.options &&
+        // eslint-disable-next-line no-underscore-dangle
+        this._compilation.options.output &&
+        // eslint-disable-next-line no-underscore-dangle
+        this._compilation.options.output.environment &&
+        // eslint-disable-next-line no-underscore-dangle
+        this._compilation.options.output.environment.templateLiteral
+    ) {
+        isTemplateLiteralSupported = true;
+    }
+
     const importCode = getImportCode(imports, options);
 
     let moduleCode: string | undefined;
