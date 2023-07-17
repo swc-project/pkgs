@@ -17,7 +17,18 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
-                    loader: require.resolve(".."), // you would put swc-loader
+                    loader: "@swc/css-loader",
+                    options: {
+                        // Enable source map
+                        sourceMap: true,
+                    },
+                },
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: "swc-loader",
                     options: {
                         // Enable source map
                         sourceMap: true,
