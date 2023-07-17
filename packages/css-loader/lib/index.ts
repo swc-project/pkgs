@@ -40,7 +40,7 @@ export default async function loader(
 
     const importCode = getImportCode(imports, options);
 
-    let moduleCode;
+    let moduleCode: string | undefined;
 
     try {
         moduleCode = getModuleCode(
@@ -51,7 +51,7 @@ export default async function loader(
             isTemplateLiteralSupported,
             this
         );
-    } catch (error) {
+    } catch (error: any) {
         callback(error);
 
         return;
