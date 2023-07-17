@@ -12,11 +12,14 @@
     },
     "keywords": [],
     "devDependencies": {
+        "@swc/css": "^0.0.24",
         "turbo": "^1.10.7",
-        "typescript": "^5.1.6"
+        "typescript": "^5.1.6",
+        "webpack": "^5.69.1"
     },
-    "dependencies": {
-        "@swc/css": "^0.0.24"
+    "peerDependencies": {
+        "@swc/css": "^0.0.24",
+        "webpack": "^5.0.0"
     },
     "type": "module"
 }
