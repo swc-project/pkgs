@@ -176,7 +176,7 @@ export function getExportCode(
 }
 
 function normalizeSourceMapForRuntime(
-    map,
+    map: SourceMap | undefined,
     loaderContext: webpack.LoaderContext<LoaderOptions>
 ) {
     const resultMap = map ? map.toJSON() : null;
