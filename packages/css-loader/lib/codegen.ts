@@ -1,5 +1,11 @@
 import { LoaderOptions } from "./index.js";
 
+export interface CssImport {
+    importName: string;
+    url: string;
+    type: "url" | string;
+}
+
 export function getImportCode(imports: CssImport[], options: LoaderOptions) {
     let code = "";
 
