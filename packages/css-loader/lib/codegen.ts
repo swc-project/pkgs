@@ -224,3 +224,33 @@ function getValidLocalName(
 
     return Array.isArray(result) ? result[0] : result;
 }
+
+export interface Param {}
+
+function printParams(media, dedupe: boolean | undefined, supports, layer) {
+    let result = "";
+
+    if (typeof layer !== "undefined") {
+        result = `, ${JSON.stringify(layer)}`;
+    }
+
+    if (typeof supports !== "undefined") {
+        result = `, ${JSON.stringify(supports)}${result}`;
+    } else if (result.length > 0) {
+        result = `, undefined${result}`;
+    }
+
+    if (dedupe) {
+        result = `, true${result}`;
+    } else if (result.length > 0) {
+        result = `, false${result}`;
+    }
+
+    if (media) {
+        result = `${JSON.stringify(media)}${result}`;
+    } else if (result.length > 0) {
+        result = `""${result}`;
+    }
+
+    return result;
+}
