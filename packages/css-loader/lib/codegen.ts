@@ -1,3 +1,4 @@
+import { RawSourceMap, SourceMapGenerator } from "source-map-js";
 import { LoaderOptions } from "./index.js";
 import type * as webpack from "webpack";
 import path from "path";
@@ -9,9 +10,13 @@ export interface CssImport {
 }
 
 export interface CssTransformResult {
-    map: string | undefined;
+    map: SourceMap | undefined;
     css: string;
 }
+
+export type SourceMap = SourceMapGenerator & {
+    toJSON(): RawSourceMap;
+};
 
 export function getImportCode(imports: CssImport[], options: LoaderOptions) {
     let code = "";
