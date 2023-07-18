@@ -1,5 +1,5 @@
 import { RawSourceMap, SourceMapGenerator } from "source-map-js";
-import { LoaderOptions } from "./index.js";
+import { LoaderOptions, ModulesOptions } from "./index.js";
 import type * as webpack from "webpack";
 import path from "path";
 
@@ -224,7 +224,7 @@ function normalizeSourceMapForRuntime(
 
 function getValidLocalName(
     localName: string,
-    exportLocalsConvention: LoaderOptions["exportLocalsConventionType"]
+    exportLocalsConvention: ModulesOptions["exportLocalsConvention"]
 ) {
     const result = exportLocalsConvention(localName);
 

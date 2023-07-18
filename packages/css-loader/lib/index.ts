@@ -25,10 +25,10 @@ export interface LoaderOptions {
         | "asIs"
         | string;
 
-    modules: ModulesOption;
+    modules: ModulesOptions;
 }
 
-export interface ModulesOption {
+export interface ModulesOptions {
     exportOnlyLocals: boolean;
     exportLocalsConvention: (name: string) => string;
 }
