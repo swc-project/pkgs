@@ -21,5 +21,8 @@
     "peerDependencies": {
         "@swc/css": "^0.0.24",
         "webpack": "^5.0.0"
+    },
+    "dependencies": {
+        "source-map-js": "^1.0.2"
     }
 }
