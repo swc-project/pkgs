@@ -7,6 +7,11 @@ export interface CssImport {
     type: "url" | string;
 }
 
+export interface CssTransformResult {
+    map: string | undefined;
+    css: string;
+}
+
 export function getImportCode(imports: CssImport[], options: LoaderOptions) {
     let code = "";
 
@@ -23,7 +28,7 @@ export function getImportCode(imports: CssImport[], options: LoaderOptions) {
 }
 
 export function getModuleCode(
-    result,
+    result: CssTransformResult,
     api,
     replacements,
     options: LoaderOptions,
