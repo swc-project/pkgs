@@ -75,13 +75,7 @@ export default async function loader(
         return;
     }
 
-    const exportCode = getExportCode(
-        exports,
-        replacements,
-        needToUseIcssPlugin,
-        options,
-        isTemplateLiteralSupported
-    );
+    const exportCode = getExportCode(options, isTemplateLiteralSupported);
 
     callback(null, `${importCode}${moduleCode}${exportCode}`);
 }
