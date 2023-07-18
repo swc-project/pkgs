@@ -25,8 +25,8 @@ export function getModuleCode(
     result,
     api,
     replacements,
-    options,
-    isTemplateLiteralSupported,
+    options: LoaderOptions,
+    isTemplateLiteralSupported: boolean,
     loaderContext
 ) {
     if (options.modules.exportOnlyLocals === true) {
@@ -131,8 +131,8 @@ export function getExportCode(
     exports,
     replacements,
     icssPluginUsed,
-    options,
-    isTemplateLiteralSupported
+    options: LoaderOptions,
+    isTemplateLiteralSupported: boolean
 ) {
     let code = "// Exports\n";
 
