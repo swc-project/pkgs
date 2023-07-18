@@ -37,7 +37,12 @@ export interface ApiParam {
     importName?: string;
 }
 
-export interface ApiReplacement {}
+export interface ApiReplacement {
+    replacementName: string;
+    localName: string;
+    importName: string;
+    needQuotes: boolean;
+}
 
 export function getModuleCode(
     result: CssTransformResult,
