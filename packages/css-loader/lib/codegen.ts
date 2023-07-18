@@ -168,3 +168,50 @@ export function getExportCode(
 
     return code;
 }
+
+function normalizeSourceMapForRuntime(
+    map,
+    loaderContext: webpack.LoaderContext<LoaderOptions>
+) {
+    const resultMap = map ? map.toJSON() : null;
+
+    if (resultMap) {
+        delete resultMap.file;
+
+        /* eslint-disable no-underscore-dangle */
+        if (
+            loaderContext._compilation &&
+            loaderContext._compilation.options &&
+            loaderContext._compilation.options.devtool &&
+            loaderContext._compilation.options.devtool.includes("nosources")
+        ) {
+            /* eslint-enable no-underscore-dangle */
+
+            delete resultMap.sourcesContent;
+        }
+
+        resultMap.sourceRoot = "";
+        resultMap.sources = resultMap.sources.map((source) => {
+            // Non-standard syntax from `postcss`
+            if (source.indexOf("<") === 0) {
+                return source;
+            }
+
+            const sourceType = getURLType(source);
+
+            if (sourceType !== "path-relative") {
+                return source;
+            }
+
+            const resourceDirname = path.dirname(loaderContext.resourcePath);
+            const absoluteSource = path.resolve(resourceDirname, source);
+            const contextifyPath = normalizePath(
+                path.relative(loaderContext.rootContext, absoluteSource)
+            );
+
+            return `webpack://./${contextifyPath}`;
+        });
+    }
+
+    return JSON.stringify(resultMap);
+}
