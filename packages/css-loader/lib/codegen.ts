@@ -35,7 +35,7 @@ export function getImportCode(imports: CssImport[], options: LoaderOptions) {
 
 export function getModuleCode(
     result: CssTransformResult,
-    api,
+    api: ApiParam[],
     replacements,
     options: LoaderOptions,
     isTemplateLiteralSupported: boolean,
@@ -231,7 +231,7 @@ function getValidLocalName(
     return Array.isArray(result) ? result[0] : result;
 }
 
-export interface Param {}
+export interface ApiParam {}
 
 function printParams(media, dedupe: boolean | undefined, supports, layer) {
     let result = "";
