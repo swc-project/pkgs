@@ -24,6 +24,13 @@ export interface LoaderOptions {
         | "dashesOnly"
         | "asIs"
         | string;
+
+    modules: ModulesOption;
+}
+
+export interface ModulesOption {
+    exportOnlyLocals: boolean;
+    exportLocalsConvention: (name: string) => string;
 }
 
 export default async function loader(
