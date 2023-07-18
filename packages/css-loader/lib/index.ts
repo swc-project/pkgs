@@ -12,6 +12,10 @@ export interface LoaderOptions {
     parseMap?: boolean;
     sourceMap?: boolean;
     cssModules?: CssModuleTransformOptions;
+
+    esModule?: boolean;
+
+    exportType?: "string" | "array" | "css-style-sheet" | string;
 }
 
 export default async function loader(

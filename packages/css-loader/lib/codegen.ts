@@ -4,8 +4,6 @@ export interface CssImport {
     importName: string;
     url: string;
     type: "url" | string;
-
-    exportType: "string" | "array" | "css-style-sheet" | string;
 }
 
 export function getImportCode(imports: CssImport[], options: LoaderOptions) {
