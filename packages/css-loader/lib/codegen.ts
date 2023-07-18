@@ -1,4 +1,5 @@
 import { LoaderOptions } from "./index.js";
+import type * as webpack from "webpack";
 
 export interface CssImport {
     importName: string;
@@ -27,7 +28,7 @@ export function getModuleCode(
     replacements,
     options: LoaderOptions,
     isTemplateLiteralSupported: boolean,
-    loaderContext
+    loaderContext: webpack.LoaderContext<LoaderOptions>
 ) {
     if (options.modules.exportOnlyLocals === true) {
         return "";
