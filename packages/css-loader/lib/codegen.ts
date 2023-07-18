@@ -124,8 +124,8 @@ export function getModuleCode(
         } else {
             const { hash, needQuotes } = item;
             const getUrlOptions = []
-                .concat(hash ? [`hash: ${JSON.stringify(hash)}`] : [])
-                .concat(needQuotes ? "needQuotes: true" : []);
+                .concat(hash ? [`hash: ${JSON.stringify(hash)}`] : ([] as any))
+                .concat(needQuotes ? "needQuotes: true" : ([] as any));
             const preparedOptions =
                 getUrlOptions.length > 0
                     ? `, { ${getUrlOptions.join(", ")} }`
