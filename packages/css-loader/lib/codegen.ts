@@ -215,3 +215,12 @@ function normalizeSourceMapForRuntime(
 
     return JSON.stringify(resultMap);
 }
+
+function getValidLocalName(
+    localName: string,
+    exportLocalsConvention: LoaderOptions["exportLocalsConventionType"]
+) {
+    const result = exportLocalsConvention(localName);
+
+    return Array.isArray(result) ? result[0] : result;
+}

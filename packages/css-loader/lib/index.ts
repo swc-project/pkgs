@@ -16,6 +16,14 @@ export interface LoaderOptions {
     esModule?: boolean;
 
     exportType?: "string" | "array" | "css-style-sheet" | string;
+
+    exportLocalsConventionType?:
+        | "camelCase"
+        | "camelCaseOnly"
+        | "dashes"
+        | "dashesOnly"
+        | "asIs"
+        | string;
 }
 
 export default async function loader(
