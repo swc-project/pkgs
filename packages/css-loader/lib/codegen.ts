@@ -33,10 +33,16 @@ export function getImportCode(imports: CssImport[], options: LoaderOptions) {
     return code ? `// Imports\n${code}` : "";
 }
 
+export interface ApiParam {
+    importName?: string;
+}
+
+export interface ApiReplacement {}
+
 export function getModuleCode(
     result: CssTransformResult,
     api: ApiParam[],
-    replacements,
+    replacements: ApiReplacement[],
     options: LoaderOptions,
     isTemplateLiteralSupported: boolean,
     loaderContext: webpack.LoaderContext<LoaderOptions>
@@ -229,10 +235,6 @@ function getValidLocalName(
     const result = exportLocalsConvention(localName);
 
     return Array.isArray(result) ? result[0] : result;
-}
-
-export interface ApiParam {
-    importName?: string;
 }
 
 function printParams(media, dedupe: boolean | undefined, supports, layer) {
