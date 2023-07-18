@@ -1,5 +1,6 @@
 import { LoaderOptions } from "./index.js";
 import type * as webpack from "webpack";
+import path from "path";
 
 export interface CssImport {
     importName: string;
@@ -253,4 +254,23 @@ function printParams(media, dedupe: boolean | undefined, supports, layer) {
     }
 
     return result;
+}
+
+const SLASH = "\\".charCodeAt(0);
+const BACKTICK = "`".charCodeAt(0);
+const DOLLAR = "$".charCodeAt(0);
+
+function convertToTemplateLiteral(str: string) {
+    let escapedString = "";
+
+    for (let i = 0; i < str.length; i++) {
+        const code = str.charCodeAt(i);
+
+        escapedString +=
+            code === SLASH || code === BACKTICK || code === DOLLAR
+                ? `\\${str[i]}`
+                : str[i];
+    }
+
+    return `\`${escapedString}\``;
 }
