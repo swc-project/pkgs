@@ -29,6 +29,7 @@ export interface LoaderOptions {
 }
 
 export interface ModulesOptions {
+    namedExport: boolean;
     exportOnlyLocals: boolean;
     exportLocalsConvention: (name: string) => string;
 }

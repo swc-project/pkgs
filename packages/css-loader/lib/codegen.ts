@@ -231,7 +231,9 @@ function getValidLocalName(
     return Array.isArray(result) ? result[0] : result;
 }
 
-export interface ApiParam {}
+export interface ApiParam {
+    importName?: string;
+}
 
 function printParams(media, dedupe: boolean | undefined, supports, layer) {
     let result = "";
