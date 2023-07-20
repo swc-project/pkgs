@@ -5,7 +5,14 @@ import {
     transformSync,
 } from "@swc/css";
 import type * as webpack from "webpack";
-import { getImportCode, getModuleCode, getExportCode } from "./codegen.js";
+import {
+    getImportCode,
+    getModuleCode,
+    getExportCode,
+    CssImport,
+    ApiReplacement,
+    ApiParam,
+} from "./codegen.js";
 
 export interface LoaderOptions {
     sync?: boolean;
@@ -75,6 +82,12 @@ export default async function loader(
     ) {
         isTemplateLiteralSupported = true;
     }
+
+    const imports: CssImport[] = [];
+    const api: ApiParam[] = [];
+    const replacements: ApiReplacement[] = [];
+
+    const options: LoaderOptions = {};
 
     const importCode = getImportCode(imports, options);
 
