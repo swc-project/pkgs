@@ -10,7 +10,7 @@ export interface CssImport {
 }
 
 export interface CssTransformResult {
-    map: SourceMap | undefined;
+    map: RawSourceMap;
     css: string;
 }
 
@@ -195,10 +195,10 @@ export function getExportCode(
 }
 
 function normalizeSourceMapForRuntime(
-    map: SourceMap | undefined,
+    map: RawSourceMap | undefined,
     loaderContext: webpack.LoaderContext<LoaderOptions>
 ) {
-    const resultMap = map ? map.toJSON() : null;
+    const resultMap = map ? map : null;
 
     if (resultMap) {
         delete resultMap.file;

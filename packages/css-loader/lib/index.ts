@@ -1,3 +1,4 @@
+import { RawSourceMap, SourceMapGenerator } from "source-map-js";
 import {
     CssModuleTransformOptions,
     TransformOptions,
@@ -96,6 +97,7 @@ export default async function loader(
     console.log(deps);
     const result: CssTransformResult = {
         css: transformResult.code,
+        map: transformResult.map ? JSON.parse(transformResult.map) : undefined,
     };
 
     const importCode = getImportCode(imports, options);
