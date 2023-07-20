@@ -65,6 +65,7 @@ export default async function loader(
         filename,
         cssModules: loaderOptions.cssModules,
         minify: false,
+        analyzeDependencies: true,
     };
 
     let isTemplateLiteralSupported = false;
@@ -91,7 +92,11 @@ export default async function loader(
     const options: LoaderOptions = {};
 
     const transformResult = await transform(source, transformOptions);
-    const result: CssTransformResult = {};
+    const deps = JSON.parse(transformResult.deps!);
+    console.log(deps);
+    const result: CssTransformResult = {
+        css: transformResult.code,
+    };
 
     const importCode = getImportCode(imports, options);
 
