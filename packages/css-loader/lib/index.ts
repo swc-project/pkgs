@@ -110,8 +110,8 @@ export default async function loader(
     };
 
     const transformResult = await transform(source, transformOptions);
+    console.log(`Deps string: ${transformResult.deps!}`);
     const deps = JSON.parse(transformResult.deps!);
-    console.log(deps);
     const result: CssTransformResult = {
         css: transformResult.code,
         map: transformResult.map ? JSON.parse(transformResult.map) : undefined,
