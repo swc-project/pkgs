@@ -17,9 +17,10 @@ import {
 } from "./codegen.js";
 
 export interface Options {
-    cssModules: CssModuleTransformOptions;
-
+    sourceMap: boolean;
     esModule: boolean;
+
+    cssModules: CssModuleTransformOptions;
 
     exportType: "string" | "array" | "css-style-sheet" | string;
 
@@ -37,7 +38,6 @@ export interface Options {
 export type LoaderOptions = Partial<Options> & {
     sync?: boolean;
     parseMap?: boolean;
-    sourceMap?: boolean;
 };
 
 export interface ModulesOptions {
@@ -93,7 +93,7 @@ export default async function loader(
     const api: ApiParam[] = [];
     const replacements: ApiReplacement[] = [];
 
-    const options: LoaderOptions = {
+    const options: Options = {
         modules: {},
     };
 

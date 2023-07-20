@@ -1,5 +1,5 @@
 import { RawSourceMap, SourceMapGenerator } from "source-map-js";
-import { Options, ModulesOptions } from "./index.js";
+import { Options, ModulesOptions, LoaderOptions } from "./index.js";
 import type * as webpack from "webpack";
 import path from "path";
 
@@ -58,7 +58,7 @@ export function getModuleCode(
     replacements: ApiReplacement[],
     options: Options,
     isTemplateLiteralSupported: boolean,
-    loaderContext: webpack.LoaderContext<Options>
+    loaderContext: webpack.LoaderContext<LoaderOptions>
 ) {
     if (options.modules.exportOnlyLocals === true) {
         return "";
@@ -196,7 +196,7 @@ export function getExportCode(
 
 function normalizeSourceMapForRuntime(
     map: RawSourceMap | undefined,
-    loaderContext: webpack.LoaderContext<Options>
+    loaderContext: webpack.LoaderContext<LoaderOptions>
 ) {
     const resultMap = map ? map : null;
 
