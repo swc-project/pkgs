@@ -288,3 +288,28 @@ function convertToTemplateLiteral(str: string) {
 
     return `\`${escapedString}\``;
 }
+
+function normalizePath(file: string) {
+    return path.sep === "\\" ? file.replace(/\\/g, "/") : file;
+}
+
+// We can't use path.win32.isAbsolute because it also matches paths starting with a forward slash
+const IS_NATIVE_WIN32_PATH = /^[a-z]:[/\\]|^\\\\/i;
+
+const ABSOLUTE_SCHEME = /^[a-z0-9+\-.]+:/i;
+
+function getURLType(source: string) {
+    if (source[0] === "/") {
+        if (source[1] === "/") {
+            return "scheme-relative";
+        }
+
+        return "path-absolute";
+    }
+
+    if (IS_NATIVE_WIN32_PATH.test(source)) {
+        return "path-absolute";
+    }
+
+    return ABSOLUTE_SCHEME.test(source) ? "absolute" : "path-relative";
+}
