@@ -35,6 +35,10 @@ export function getImportCode(imports: CssImport[], options: LoaderOptions) {
 
 export interface ApiParam {
     importName?: string;
+
+    layer: string;
+    supports: string;
+    media: string;
 }
 
 export interface ApiReplacement {
@@ -242,7 +246,12 @@ function getValidLocalName(
     return Array.isArray(result) ? result[0] : result;
 }
 
-function printParams(media, dedupe: boolean | undefined, supports, layer) {
+function printParams(
+    media: string,
+    dedupe: boolean | undefined,
+    supports: string,
+    layer: string
+) {
     let result = "";
 
     if (typeof layer !== "undefined") {
