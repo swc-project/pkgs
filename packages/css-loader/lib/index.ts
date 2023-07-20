@@ -12,6 +12,7 @@ import {
     CssImport,
     ApiReplacement,
     ApiParam,
+    CssTransformResult,
 } from "./codegen.js";
 
 export interface LoaderOptions {
@@ -88,6 +89,9 @@ export default async function loader(
     const replacements: ApiReplacement[] = [];
 
     const options: LoaderOptions = {};
+
+    const transformResult = await transform(source, transformOptions);
+    const result: CssTransformResult = {};
 
     const importCode = getImportCode(imports, options);
 
