@@ -34,6 +34,7 @@ export function getImportCode(imports: CssImport[], options: LoaderOptions) {
 }
 
 export interface ApiParam {
+    url: string;
     importName?: string;
 
     layer: string;
@@ -46,6 +47,7 @@ export interface ApiReplacement {
     localName: string;
     importName: string;
     needQuotes: boolean;
+    hash: string;
 }
 
 export function getModuleCode(
