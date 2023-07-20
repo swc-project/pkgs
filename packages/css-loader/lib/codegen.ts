@@ -6,7 +6,7 @@ import path from "path";
 export interface CssImport {
     importName: string;
     url: string;
-    type: "url" | string;
+    type?: "url" | string;
 }
 
 export interface CssTransformResult {
