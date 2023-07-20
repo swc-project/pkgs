@@ -94,6 +94,7 @@ export default async function loader(
     const replacements: ApiReplacement[] = [];
 
     const options: Options = {
+        // TODO
         modules: {
             namedExport: false,
             exportOnlyLocals: false,
