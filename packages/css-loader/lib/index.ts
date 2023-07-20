@@ -94,7 +94,18 @@ export default async function loader(
     const replacements: ApiReplacement[] = [];
 
     const options: Options = {
-        modules: {},
+        modules: {
+            namedExport: false,
+            exportOnlyLocals: false,
+            exportLocalsConvention: (name: string) => name,
+        },
+        sourceMap: false,
+        esModule: false,
+        cssModules: {
+            pattern: loaderOptions.cssModules?.pattern ?? "",
+        },
+        exportType: "string",
+        exportLocalsConventionType: "asIs",
     };
 
     const transformResult = await transform(source, transformOptions);
