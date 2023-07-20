@@ -90,7 +90,9 @@ export default async function loader(
     const api: ApiParam[] = [];
     const replacements: ApiReplacement[] = [];
 
-    const options: LoaderOptions = {};
+    const options: LoaderOptions = {
+        modules: {},
+    };
 
     const transformResult = await transform(source, transformOptions);
     const deps = JSON.parse(transformResult.deps!);
