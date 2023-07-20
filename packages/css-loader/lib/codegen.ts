@@ -1,5 +1,5 @@
 import { RawSourceMap, SourceMapGenerator } from "source-map-js";
-import { LoaderOptions, ModulesOptions } from "./index.js";
+import { Options, ModulesOptions } from "./index.js";
 import type * as webpack from "webpack";
 import path from "path";
 
@@ -18,7 +18,7 @@ export type SourceMap = SourceMapGenerator & {
     toJSON(): RawSourceMap;
 };
 
-export function getImportCode(imports: CssImport[], options: LoaderOptions) {
+export function getImportCode(imports: CssImport[], options: Options) {
     let code = "";
 
     for (const item of imports) {
@@ -56,9 +56,9 @@ export function getModuleCode(
     result: CssTransformResult,
     api: ApiParam[],
     replacements: ApiReplacement[],
-    options: LoaderOptions,
+    options: Options,
     isTemplateLiteralSupported: boolean,
-    loaderContext: webpack.LoaderContext<LoaderOptions>
+    loaderContext: webpack.LoaderContext<Options>
 ) {
     if (options.modules.exportOnlyLocals === true) {
         return "";
@@ -159,7 +159,7 @@ export function getModuleCode(
 }
 
 export function getExportCode(
-    options: LoaderOptions,
+    options: Options,
     isTemplateLiteralSupported: boolean
 ) {
     let code = "// Exports\n";
@@ -196,7 +196,7 @@ export function getExportCode(
 
 function normalizeSourceMapForRuntime(
     map: RawSourceMap | undefined,
-    loaderContext: webpack.LoaderContext<LoaderOptions>
+    loaderContext: webpack.LoaderContext<Options>
 ) {
     const resultMap = map ? map : null;
 

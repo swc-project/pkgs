@@ -16,17 +16,14 @@ import {
     CssTransformResult,
 } from "./codegen.js";
 
-export interface LoaderOptions {
-    sync?: boolean;
-    parseMap?: boolean;
-    sourceMap?: boolean;
-    cssModules?: CssModuleTransformOptions;
+export interface Options {
+    cssModules: CssModuleTransformOptions;
 
-    esModule?: boolean;
+    esModule: boolean;
 
-    exportType?: "string" | "array" | "css-style-sheet" | string;
+    exportType: "string" | "array" | "css-style-sheet" | string;
 
-    exportLocalsConventionType?:
+    exportLocalsConventionType:
         | "camelCase"
         | "camelCaseOnly"
         | "dashes"
@@ -36,6 +33,12 @@ export interface LoaderOptions {
 
     modules: ModulesOptions;
 }
+
+export type LoaderOptions = Partial<Options> & {
+    sync?: boolean;
+    parseMap?: boolean;
+    sourceMap?: boolean;
+};
 
 export interface ModulesOptions {
     namedExport: boolean;
