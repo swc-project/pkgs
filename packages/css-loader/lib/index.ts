@@ -68,7 +68,7 @@ export default async function loader(
 
     const cssModulesOptions: CssModuleTransformOptions =
         loaderOptions.cssModules ?? {
-            pattern: "[filename]-[local]-[hash]",
+            pattern: "[name]-[local]-[hash]",
         };
 
     let transformOptions: TransformOptions = {
