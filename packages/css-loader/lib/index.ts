@@ -105,7 +105,9 @@ export default async function loader(
         sourceMap: false,
         esModule: true,
         cssModules: {
-            pattern: loaderOptions.cssModules?.pattern ?? "[local]",
+            pattern:
+                loaderOptions.cssModules?.pattern ??
+                "[filename]-[local]-[hash]",
         },
         exportType: "string",
         exportLocalsConventionType: "asIs",
