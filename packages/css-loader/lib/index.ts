@@ -66,10 +66,15 @@ export default async function loader(
     const sync = loaderOptions.sync;
     const parseMap = loaderOptions.parseMap;
 
+    const cssModulesOptions: CssModuleTransformOptions =
+        loaderOptions.cssModules ?? {
+            pattern: "[filename]-[local]-[hash]",
+        };
+
     let transformOptions: TransformOptions = {
         sourceMap: loaderOptions.sourceMap,
         filename,
-        cssModules: loaderOptions.cssModules,
+        cssModules: cssModulesOptions,
         minify: false,
         analyzeDependencies: true,
     };
@@ -105,9 +110,7 @@ export default async function loader(
         sourceMap: false,
         esModule: true,
         cssModules: {
-            pattern:
-                loaderOptions.cssModules?.pattern ??
-                "[filename]-[local]-[hash]",
+            pattern: cssModulesOptions.pattern,
         },
         exportType: "string",
         exportLocalsConventionType: "asIs",
