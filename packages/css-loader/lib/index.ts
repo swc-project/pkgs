@@ -142,6 +142,31 @@ export default async function loader(
         }
     }
 
+    const icssPluginImports: CssImport[] = [];
+    const icssPluginApi: ApiParam[] = [];
+
+    const needToUseIcssPlugin = shouldUseIcssPlugin(options);
+
+    if (needToUseIcssPlugin) {
+        plugins.push(
+            icssParser({
+                loaderContext: this,
+                imports: icssPluginImports,
+                api: icssPluginApi,
+                replacements,
+                exports,
+                urlHandler: (url) =>
+                    stringifyRequest(
+                        this,
+                        combineRequests(
+                            getPreRequester(this)(options.importLoaders),
+                            url
+                        )
+                    ),
+            })
+        );
+    }
+
     const transformResult = await transformSync(source, transformOptions);
     const deps = JSON.parse(transformResult.deps!);
     const result: CssTransformResult = {
@@ -170,7 +195,13 @@ export default async function loader(
         return;
     }
 
-    const exportCode = getExportCode(options, isTemplateLiteralSupported);
+    const exportCode = getExportCode(
+        exports,
+        replacements,
+        needToUseIcssPlugin,
+        options,
+        isTemplateLiteralSupported
+    );
 
     console.log(
         `One file: ${importCode}\n===== =====\n${moduleCode}\n===== =====\n${exportCode}`
