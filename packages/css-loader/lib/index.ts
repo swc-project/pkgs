@@ -165,6 +165,10 @@ export default async function loader(
 
     const exportCode = getExportCode(options, isTemplateLiteralSupported);
 
+    console.log(
+        `One file: ${importCode}\n===== =====\n${moduleCode}\n===== =====\n${exportCode}`
+    );
+
     callback(null, `${importCode}${moduleCode}${exportCode}`);
 }
 
