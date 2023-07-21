@@ -55,6 +55,7 @@ export default async function loader(
     // Make the loader async
     const callback = this.async();
     const filename = this.resourcePath;
+    console.log(`Filename: ${filename}`);
 
     const loaderOptions = this.getOptions();
 
