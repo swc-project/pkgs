@@ -14,7 +14,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.css$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: "@swc/css-loader",
