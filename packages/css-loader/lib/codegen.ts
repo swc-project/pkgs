@@ -10,6 +10,8 @@ export interface CssImport {
     type?: "url" | string;
 }
 
+export interface CssExport {}
+
 export interface CssTransformResult {
     map: RawSourceMap;
     css: string;
@@ -170,11 +172,11 @@ export function getModuleCode(
 }
 
 export function getExportCode(
-    exports,
-    replacements,
-    icssPluginUsed,
-    options,
-    isTemplateLiteralSupported
+    exports: CssExport[],
+    replacements: ApiReplacement[],
+    icssPluginUsed: boolean,
+    options: Options,
+    isTemplateLiteralSupported: boolean
 ) {
     let code = "// Exports\n";
 
