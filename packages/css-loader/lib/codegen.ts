@@ -10,7 +10,10 @@ export interface CssImport {
     type?: "url" | string;
 }
 
-export interface CssExport {}
+export interface CssExport {
+    name: string;
+    value: string;
+}
 
 export interface CssTransformResult {
     map: RawSourceMap;
@@ -183,7 +186,10 @@ export function getExportCode(
     if (icssPluginUsed) {
         let localsCode = "";
 
-        const addExportToLocalsCode = (names, value) => {
+        const addExportToLocalsCode = (
+            names: ReturnType<ModulesOptions["exportLocalsConvention"]>,
+            value: string
+        ) => {
             const normalizedNames = Array.isArray(names)
                 ? new Set(names)
                 : new Set([names]);
