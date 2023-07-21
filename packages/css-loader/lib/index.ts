@@ -98,7 +98,7 @@ export default async function loader(
         // TODO
         modules: {
             namedExport: false,
-            exportOnlyLocals: true,
+            exportOnlyLocals: false,
             exportLocalsConvention: (name: string) => name,
         },
         sourceMap: false,
