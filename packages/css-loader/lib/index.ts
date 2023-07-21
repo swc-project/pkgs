@@ -105,7 +105,7 @@ export default async function loader(
         sourceMap: false,
         esModule: true,
         cssModules: {
-            pattern: loaderOptions.cssModules?.pattern ?? "",
+            pattern: loaderOptions.cssModules?.pattern ?? "[local]",
         },
         exportType: "string",
         exportLocalsConventionType: "asIs",
