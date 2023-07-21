@@ -4,7 +4,7 @@ import type * as webpack from "webpack";
 import path from "path";
 
 export interface CssImport {
-    icss: boolean;
+    icss?: boolean;
     importName: string;
     url: string;
     type?: "url" | string;
