@@ -14,6 +14,7 @@ import {
     ApiReplacement,
     ApiParam,
     CssTransformResult,
+    CssExport,
 } from "./codegen.js";
 import path from "path";
 
@@ -96,6 +97,7 @@ export default async function loader(
         isTemplateLiteralSupported = true;
     }
 
+    const exports: CssExport[] = [];
     const imports: CssImport[] = [];
     const api: ApiParam[] = [];
     const replacements: ApiReplacement[] = [];
