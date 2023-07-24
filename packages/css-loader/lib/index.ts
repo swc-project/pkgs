@@ -110,7 +110,7 @@ export default async function loader(
         // TODO
         modules: {
             namedExport: true,
-            exportOnlyLocals: true,
+            exportOnlyLocals: false,
             exportLocalsConvention: (name: string) => name,
         },
         sourceMap: false,
