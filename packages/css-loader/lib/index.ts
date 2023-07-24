@@ -175,7 +175,7 @@ export default async function loader(
     const exportCode = getExportCode(
         exports,
         replacements,
-        needToUseIcssPlugin,
+        true,
         options,
         isTemplateLiteralSupported
     );
