@@ -16,13 +16,18 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: "@swc/css-loader",
-                    options: {
-                        // Enable source map
-                        sourceMap: true,
+                use: [
+                    {
+                        loader: "style-loader",
                     },
-                },
+                    {
+                        loader: "@swc/css-loader",
+                        options: {
+                            // Enable source map
+                            sourceMap: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.js$/,
