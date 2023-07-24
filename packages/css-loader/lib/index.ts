@@ -18,6 +18,10 @@ import {
 } from "./codegen.js";
 import path from "path";
 
+type CssModulesMapping = { text: CssModulesMappingItem[] };
+
+type CssModulesMappingItem = { type: "Local"; name: string };
+
 export interface Options {
     sourceMap: boolean;
     esModule: boolean;
@@ -145,7 +149,9 @@ export default async function loader(
     }
 
     const transformResult = await transform(source, transformOptions);
-    const modulesMapping = JSON.parse(transformResult.modulesMapping!);
+    const modulesMapping: CssModulesMapping = JSON.parse(
+        transformResult.modulesMapping!
+    );
     const deps = JSON.parse(transformResult.deps!);
     const result: CssTransformResult = {
         css: transformResult.code,
@@ -154,6 +160,12 @@ export default async function loader(
 
     console.log(`modulesMapping`, modulesMapping);
     console.log(`deps`, deps);
+
+    for (const mapping of modulesMapping.text) {
+        switch (mapping.type) {
+            case "Local":
+        }
+    }
 
     const importCode = getImportCode(imports, options);
 
