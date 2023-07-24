@@ -109,8 +109,8 @@ export default async function loader(
     const options: Options = {
         // TODO
         modules: {
-            namedExport: false,
-            exportOnlyLocals: false,
+            namedExport: true,
+            exportOnlyLocals: true,
             exportLocalsConvention: (name: string) => name,
         },
         sourceMap: false,
