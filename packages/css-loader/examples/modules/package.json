@@ -20,6 +20,7 @@
     },
     "devDependencies": {
         "ecstatic": "^4.1.4",
+        "style-loader": "^3.3.3",
         "webpack": "^5.69.1",
         "webpack-cli": "^5.1.4"
     }
