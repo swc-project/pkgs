@@ -142,39 +142,16 @@ export default async function loader(
         }
     }
 
-    const icssPluginImports: CssImport[] = [];
-    const icssPluginApi: ApiParam[] = [];
-
-    const needToUseIcssPlugin = shouldUseIcssPlugin(options);
-
-    if (needToUseIcssPlugin) {
-        plugins.push(
-            icssParser({
-                loaderContext: this,
-                imports: icssPluginImports,
-                api: icssPluginApi,
-                replacements,
-                exports,
-                urlHandler: (url) =>
-                    stringifyRequest(
-                        this,
-                        combineRequests(
-                            getPreRequester(this)(options.importLoaders),
-                            url
-                        )
-                    ),
-            })
-        );
-    }
-
-    const transformResult = await transformSync(source, transformOptions);
+    const transformResult = await transform(source, transformOptions);
+    const modulesMapping = JSON.parse(transformResult.modulesMapping!);
     const deps = JSON.parse(transformResult.deps!);
     const result: CssTransformResult = {
         css: transformResult.code,
         map: transformResult.map ? JSON.parse(transformResult.map) : undefined,
     };
 
-    console.log(`Deps`, deps);
+    console.log(`modulesMapping`, modulesMapping);
+    console.log(`deps`, deps);
 
     const importCode = getImportCode(imports, options);
 
