@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import classes from "./App.module.css";
-
+console.log(classes);
 function App() {
     return (
         <div>
