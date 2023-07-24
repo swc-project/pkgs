@@ -18,7 +18,7 @@ import {
 } from "./codegen.js";
 import path from "path";
 
-type CssModulesMapping = { text: CssModulesMappingItem[] };
+type CssModulesMapping = { [name: string]: CssModulesMappingItem[] };
 
 type CssModulesMappingItem = { type: "Local"; name: string };
 
@@ -161,9 +161,14 @@ export default async function loader(
     console.log(`modulesMapping`, modulesMapping);
     console.log(`deps`, deps);
 
-    for (const mapping of modulesMapping.text) {
+    for (const name in modulesMapping) {
+        const mapping = modulesMapping[name][0];
         switch (mapping.type) {
             case "Local":
+                exports.push({
+                    name: name,
+                    value: mapping.name,
+                });
         }
     }
 
