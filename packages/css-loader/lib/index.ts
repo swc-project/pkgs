@@ -18,6 +18,8 @@ import {
 } from "./codegen.js";
 import path from "path";
 
+interface CssUrl {}
+
 type CssModulesMapping = { [name: string]: CssModulesMappingItem[] };
 
 type CssModulesMappingItem = { type: "Local"; name: string };
@@ -152,14 +154,17 @@ export default async function loader(
     const modulesMapping: CssModulesMapping = JSON.parse(
         transformResult.modulesMapping!
     );
-    const deps = JSON.parse(transformResult.deps!);
+    const deps: { imports: CssUrl[]; urls: CssUrl[] } = JSON.parse(
+        transformResult.deps!
+    );
     const result: CssTransformResult = {
         css: transformResult.code,
         map: transformResult.map ? JSON.parse(transformResult.map) : undefined,
     };
 
     console.log(`modulesMapping`, modulesMapping);
-    console.log(`deps`, deps);
+    console.log(`deps.imports:`, deps.imports);
+    console.log(`deps.urls:`, deps.urls);
 
     for (const name in modulesMapping) {
         const mapping = modulesMapping[name][0];
