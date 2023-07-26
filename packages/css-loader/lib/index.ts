@@ -22,6 +22,10 @@ interface CssUrl {
     value: string;
 }
 
+interface CssUrlImport {
+    url: CssUrl;
+}
+
 type CssModulesMapping = { [name: string]: CssModulesMappingItem[] };
 
 type CssModulesMappingItem = { type: "Local"; name: string };
@@ -156,7 +160,7 @@ export default async function loader(
     const modulesMapping: CssModulesMapping = JSON.parse(
         transformResult.modulesMapping!
     );
-    const deps: { imports: CssUrl[]; urls: CssUrl[] } = JSON.parse(
+    const deps: { imports: CssUrlImport[]; urls: CssUrl[] } = JSON.parse(
         transformResult.deps!
     );
     const result: CssTransformResult = {
@@ -172,10 +176,11 @@ export default async function loader(
 
     for (let index = 0; index <= deps.imports.length - 1; index++) {
         const i = deps.imports[index];
-        const newUrl = i.value;
+        console.log("i", i);
+        const newUrl = i.url.value;
+        console.log("newUrl", newUrl);
 
         let importName = urlToNameMap.get(newUrl);
-
         if (!importName) {
             importName = `___CSS_LOADER_AT_RULE_IMPORT_${urlToNameMap.size}___`;
             urlToNameMap.set(newUrl, importName);
