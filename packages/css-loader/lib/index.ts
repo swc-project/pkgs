@@ -228,7 +228,10 @@ export default async function loader(
             });
         }
 
-        const { hash, needQuotes } = item;
+        // TODO
+        // const { hash, needQuotes } = item;
+        const hash = "";
+        const needQuotes = false;
         const replacementKey = JSON.stringify({ newUrl, hash, needQuotes });
         let replacementName = urlToReplacementMap.get(replacementKey);
 
