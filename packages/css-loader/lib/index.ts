@@ -194,6 +194,57 @@ export default async function loader(
         }
     }
 
+    let hasUrlImportHelper = false;
+    const urlToReplacementMap = new Map<string, string>();
+    for (let index = 0; index <= deps.imports.length - 1; index++) {
+        const u = deps.urls[index];
+        const newUrl = u.value;
+
+        if (!hasUrlImportHelper) {
+            imports.push({
+                type: "get_url_import",
+                importName: "___CSS_LOADER_GET_URL_IMPORT___",
+                url: stringifyRequest(
+                    this,
+                    require.resolve("./runtime/getUrl.js")
+                ),
+                index: -1,
+            });
+
+            hasUrlImportHelper = true;
+        }
+
+        let importName = urlToNameMap.get(newUrl);
+
+        if (!importName) {
+            importName = `___CSS_LOADER_URL_IMPORT_${urlToNameMap.size}___`;
+            urlToNameMap.set(newUrl, importName);
+
+            imports.push({
+                type: "url",
+                importName,
+                url: stringifyRequest(this, newUrl),
+                index,
+            });
+        }
+
+        const { hash, needQuotes } = item;
+        const replacementKey = JSON.stringify({ newUrl, hash, needQuotes });
+        let replacementName = urlToReplacementMap.get(replacementKey);
+
+        if (!replacementName) {
+            replacementName = `___CSS_LOADER_URL_REPLACEMENT_${urlToReplacementMap.size}___`;
+            urlToReplacementMap.set(replacementKey, replacementName);
+
+            replacements.push({
+                replacementName,
+                importName,
+                hash,
+                needQuotes,
+            });
+        }
+    }
+
     for (const name in modulesMapping) {
         const mapping = modulesMapping[name][0];
         switch (mapping.type) {
