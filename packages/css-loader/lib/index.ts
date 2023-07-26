@@ -18,6 +18,14 @@ import {
 } from "./codegen.js";
 import path from "path";
 
+interface CssUrl {
+    value: string;
+}
+
+interface CssUrlImport {
+    url: CssUrl;
+}
+
 type CssModulesMapping = { [name: string]: CssModulesMappingItem[] };
 
 type CssModulesMappingItem = { type: "Local"; name: string };
@@ -152,14 +160,93 @@ export default async function loader(
     const modulesMapping: CssModulesMapping = JSON.parse(
         transformResult.modulesMapping!
     );
-    const deps = JSON.parse(transformResult.deps!);
+    const deps: { imports: CssUrlImport[]; urls: CssUrl[] } = JSON.parse(
+        transformResult.deps!
+    );
     const result: CssTransformResult = {
         css: transformResult.code,
         map: transformResult.map ? JSON.parse(transformResult.map) : undefined,
     };
 
     console.log(`modulesMapping`, modulesMapping);
-    console.log(`deps`, deps);
+    console.log(`deps.imports:`, deps.imports);
+    console.log(`deps.urls:`, deps.urls);
+
+    const urlToNameMap = new Map<string, string>();
+
+    for (let index = 0; index <= deps.imports.length - 1; index++) {
+        const i = deps.imports[index];
+        console.log("i", i);
+        const newUrl = i.url.value;
+        console.log("newUrl", newUrl);
+
+        let importName = urlToNameMap.get(newUrl);
+        if (!importName) {
+            importName = `___CSS_LOADER_AT_RULE_IMPORT_${urlToNameMap.size}___`;
+            urlToNameMap.set(newUrl, importName);
+
+            imports.push({
+                type: "rule_import",
+                importName,
+                url: stringifyRequest(this, newUrl),
+                index,
+            });
+        }
+    }
+
+    let hasUrlImportHelper = false;
+    const urlToReplacementMap = new Map<string, string>();
+    for (let index = 0; index <= deps.imports.length - 1; index++) {
+        const u = deps.urls[index];
+        const newUrl = u.value;
+
+        if (!hasUrlImportHelper) {
+            imports.push({
+                type: "get_url_import",
+                importName: "___CSS_LOADER_GET_URL_IMPORT___",
+                url: stringifyRequest(
+                    this,
+                    require.resolve("./runtime/getUrl.js")
+                ),
+                index: -1,
+            });
+
+            hasUrlImportHelper = true;
+        }
+
+        let importName = urlToNameMap.get(newUrl);
+
+        if (!importName) {
+            importName = `___CSS_LOADER_URL_IMPORT_${urlToNameMap.size}___`;
+            urlToNameMap.set(newUrl, importName);
+
+            imports.push({
+                type: "url",
+                importName,
+                url: stringifyRequest(this, newUrl),
+                index,
+            });
+        }
+
+        // TODO
+        // const { hash, needQuotes } = item;
+        const hash = "";
+        const needQuotes = false;
+        const replacementKey = JSON.stringify({ newUrl, hash, needQuotes });
+        let replacementName = urlToReplacementMap.get(replacementKey);
+
+        if (!replacementName) {
+            replacementName = `___CSS_LOADER_URL_REPLACEMENT_${urlToReplacementMap.size}___`;
+            urlToReplacementMap.set(replacementKey, replacementName);
+
+            replacements.push({
+                replacementName,
+                importName,
+                hash,
+                needQuotes,
+            });
+        }
+    }
 
     for (const name in modulesMapping) {
         const mapping = modulesMapping[name][0];

@@ -1,5 +1,13 @@
-@import 'globals.css';
+@import './globals.css';
 
 .text {
     color: green;
+}
+
+:global .globalName {
+    color: blue;
+}
+
+.background{
+    background: url('./fff.png');
 }
