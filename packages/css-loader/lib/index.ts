@@ -18,7 +18,9 @@ import {
 } from "./codegen.js";
 import path from "path";
 
-interface CssUrl {}
+interface CssUrl {
+    value: string;
+}
 
 type CssModulesMapping = { [name: string]: CssModulesMappingItem[] };
 
