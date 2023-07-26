@@ -1,0 +1,27 @@
+{
+    "name": "swc-css-loader-css-modules-app",
+    "private": false,
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "(cd ../.. && pnpm build) && webpack && cp public/* build",
+        "start": "ecstatic build --port 3000"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@swc/css": "^0.0.25",
+        "@swc/css-loader": "workspace:^",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "swc-loader": "workspace:^"
+    },
+    "devDependencies": {
+        "ecstatic": "^4.1.4",
+        "style-loader": "^3.3.3",
+        "webpack": "^5.69.1",
+        "webpack-cli": "^5.1.4"
+    }
+}
