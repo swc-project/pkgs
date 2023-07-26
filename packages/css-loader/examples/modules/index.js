@@ -5,8 +5,11 @@ console.log(classes);
 function App() {
     return (
         <div>
-            <h1 className={classes.text}>JSX is working!</h1>
-            <h1 className={"globalName"}>JSX is working!</h1>
+            <h1 className={classes.text}>local name (css modules)!</h1>
+            <h1 className={"globalName"}>global name! (:global)</h1>
+            <h1 className={"imported"}>
+                imported global name (import './global.css')
+            </h1>
         </div>
     );
 }
