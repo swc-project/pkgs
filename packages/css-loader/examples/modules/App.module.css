@@ -7,3 +7,7 @@
 :global .globalName {
     color: blue;
 }
+
+.background{
+    background: url('./fff.png');
+}

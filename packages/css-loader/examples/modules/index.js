@@ -10,6 +10,7 @@ function App() {
             <h1 className={"imported"}>
                 imported global name (import './global.css')
             </h1>
+            <h1 className={classes.background}></h1>
         </div>
     );
 }
