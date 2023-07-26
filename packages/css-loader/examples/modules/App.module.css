@@ -3,3 +3,7 @@
 .text {
     color: green;
 }
+
+:global .globalName {
+    color: blue;
+}

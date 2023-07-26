@@ -6,6 +6,7 @@ function App() {
     return (
         <div>
             <h1 className={classes.text}>JSX is working!</h1>
+            <h1 className={"globalName"}>JSX is working!</h1>
         </div>
     );
 }
