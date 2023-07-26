@@ -168,6 +168,27 @@ export default async function loader(
     console.log(`deps.imports:`, deps.imports);
     console.log(`deps.urls:`, deps.urls);
 
+    const urlToNameMap = new Map<string, string>();
+
+    for (let index = 0; index <= deps.imports.length - 1; index++) {
+        const i = deps.imports[index];
+        const newUrl = i.value;
+
+        let importName = urlToNameMap.get(newUrl);
+
+        if (!importName) {
+            importName = `___CSS_LOADER_AT_RULE_IMPORT_${urlToNameMap.size}___`;
+            urlToNameMap.set(newUrl, importName);
+
+            imports.push({
+                type: "rule_import",
+                importName,
+                url: stringifyRequest(this, newUrl),
+                index,
+            });
+        }
+    }
+
     for (const name in modulesMapping) {
         const mapping = modulesMapping[name][0];
         switch (mapping.type) {
