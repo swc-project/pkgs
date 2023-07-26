@@ -118,7 +118,7 @@ export default async function loader(
         cssModules: {
             pattern: cssModulesOptions.pattern,
         },
-        exportType: "string",
+        exportType: "array",
         exportLocalsConventionType: "asIs",
     };
 
