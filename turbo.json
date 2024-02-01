@@ -2,12 +2,15 @@
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
         "build": {
-            "inputs": ["lib/**/*.ts"],
-            "outputs": ["lib/**/*.js"]
+            "inputs": ["**/*.ts"],
+            "outputs": ["**/*.js"]
         },
         "test": {
             "dependsOn": ["build"],
             "cache": false
+        },
+        "lint": {
+            "inputs": ["**/*.ts"]
         }
     }
 }
