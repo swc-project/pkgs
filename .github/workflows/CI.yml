@@ -1,45 +1,45 @@
 name: CI
 
 on:
-    push:
-        branches: ["main"]
-    pull_request:
-        types: [opened, synchronize]
-    merge_group:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
+  merge_group:
 
 env:
-    CI: 1
+  CI: 1
 
 jobs:
-    test:
-        name: Test
-        timeout-minutes: 15
-        runs-on: ubuntu-latest
+  test:
+    name: Test
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [16, 18, 20]
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
 
-        steps:
-            - name: Check out code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 2
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-node
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Test
-              run: pnpm test
+      - name: Test
+        run: pnpm test
 
-    ci-done:
-        name: Ok
-        needs:
-            - test
-        if: always()
-        runs-on: ubuntu-latest
-        steps:
-            - run: exit 1
-              if: ${{ always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled')) }}
+  ci-done:
+    name: Ok
+    needs:
+      - test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+        if: ${{ always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled')) }}
