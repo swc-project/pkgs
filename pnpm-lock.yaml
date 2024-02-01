@@ -67,7 +67,7 @@ importers:
         specifier: ^1.2.66
         version: 1.2.177
       '@swc/jest':
-        specifier: link:../jest
+        specifier: workspace:^
         version: link:../jest
       '@types/jest':
         specifier: ^29.5.0
