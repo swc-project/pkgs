@@ -1,7 +1,7 @@
 {
     "name": "swc-css-loader-css-modules-app",
     "private": true,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "index.js",
     "scripts": {
