@@ -170,11 +170,6 @@ importers:
 
   packages/jest:
     dependencies:
-      packages:
-
-        specifier: link:..
-
-        version: link:..
       '@jest/create-cache-key-function':
         specifier: ^29.7.0
         version: 29.7.0
