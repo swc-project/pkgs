@@ -1,5 +1,5 @@
 {
-    "name": "spack-node-modules",
+    "name": "spack-example-node-modules",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",

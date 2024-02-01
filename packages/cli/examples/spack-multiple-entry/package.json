@@ -1,5 +1,5 @@
 {
-    "name": "spack-multiple-entry",
+    "name": "spack-example-multiple-entry",
     "private": true,
     "version": "1.0.0",
     "main": "lib/index.js",
