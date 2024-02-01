@@ -34,10 +34,27 @@ jobs:
       - name: Test
         run: pnpm test
 
+  lint:
+    name: Lint
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 20
+
+      - name: Test
+        run: pnpm lint
+
   ci-done:
     name: Ok
     needs:
       - test
+      - lint
     if: always()
     runs-on: ubuntu-latest
     steps:
