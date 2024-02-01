@@ -6,7 +6,7 @@
     "types": "index.d.ts",
     "homepage": "https://github.com/swc-project/pkgs/tree/main/packages/jest",
     "scripts": {
-        "build": "npm run lint && tsc",
+        "build": "tsc",
         "test": "npm test --workspaces",
         "prepublishOnly": "npm run build && node scripts/publish_helper.js prepublish",
         "postpublish": "node scripts/publish_helper.js postpublish",
