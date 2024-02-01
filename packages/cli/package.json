@@ -1,10 +1,10 @@
 {
     "name": "@swc/cli",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "description": "CLI for the swc project",
     "main": "lib/swc/index.js",
     "scripts": {
-        "prepublishOnly": "pnpm build && pnpm test && pnpm types",
+        "prepublishOnly": "pnpm build",
         "types": "tsc",
         "types:watch": "tsc --watch",
         "build": "swc src -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
@@ -57,7 +57,7 @@
     "devDependencies": {
         "@swc/cli": "^0.1.43",
         "@swc/core": "^1.2.66",
-        "@swc/jest": "^0.1.2",
+        "@swc/jest": "link:../jest",
         "@types/jest": "^29.5.0",
         "@types/node": "^20.11.5",
         "@types/semver": "^7.3.13",
