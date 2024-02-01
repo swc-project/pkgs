@@ -1,6 +1,18 @@
 import commander from "commander";
-import { DEFAULT_EXTENSIONS, version as swcCoreVersion } from "@swc/core";
+import { version as swcCoreVersion } from "@swc/core";
 import type { Options } from "@swc/core";
+
+const DEFAULT_EXTENSIONS = [
+    ".js",
+    ".jsx",
+    ".es6",
+    ".es",
+    ".mjs",
+    ".ts",
+    ".tsx",
+    ".cts",
+    ".mts",
+];
 
 const pkg = require("../../package.json");
 
