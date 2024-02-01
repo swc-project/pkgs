@@ -19,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/swc-project/cli.git"
+        "url": "git+https://github.com/swc-project/pkgs.git"
     },
     "keywords": [
         "swc",
@@ -34,9 +34,9 @@
     "author": "강동윤 <kdy1997.dev@gmail.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/swc-project/cli/issues"
+        "url": "https://github.com/swc-project/pkgs/issues"
     },
-    "homepage": "https://github.com/swc-project/cli#readme",
+    "homepage": "https://github.com/swc-project/pkgs",
     "engines": {
         "node": ">= 16.14.0"
     },
