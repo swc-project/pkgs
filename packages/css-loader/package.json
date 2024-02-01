@@ -7,8 +7,7 @@
     "license": "APACHE-2.0",
     "main": "lib/index.js",
     "scripts": {
-        "build": "tsc",
-        "test": "jest"
+        "build": "tsc"
     },
     "keywords": [],
     "devDependencies": {

@@ -1,12 +1,18 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "inputs": ["lib/**/*.ts"],
-      "outputs": ["lib/**/*.js"]
-    },
-    "test": {
-      "dependsOn": ["build"]
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "inputs": ["**/*.ts"],
+            "outputs": ["**/*.js"],
+            "outputMode": "new-only"
+        },
+        "test": {
+            "dependsOn": ["build"],
+            "cache": false
+        },
+        "lint": {
+            "inputs": ["**/*.ts"],
+            "outputMode": "new-only"
+        }
     }
-  }
 }
