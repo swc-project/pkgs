@@ -14,8 +14,7 @@
         "format": "pnpm format:src && pnpm format:examples",
         "test": "jest",
         "test:watch": "jest --watch",
-        "test:coverage": "JEST_COVERAGE=true jest --coverage",
-        "enableGitHooks": "simple-git-hooks"
+        "test:coverage": "JEST_COVERAGE=true jest --coverage"
     },
     "repository": {
         "type": "git",
