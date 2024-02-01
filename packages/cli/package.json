@@ -7,8 +7,8 @@
         "prepublishOnly": "pnpm build && pnpm test && pnpm types",
         "types": "tsc",
         "types:watch": "tsc --watch",
-        "build": "swc src -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
-        "build:watch": "swc src -d lib --watch --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
+        "build": "node ./bin/swc src -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
+        "build:watch": "node ./bin/swc src -d lib --watch --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
         "format:src": "prettier --write src",
         "format:examples": "prettier --write examples",
         "format": "pnpm format:src && pnpm format:examples",
@@ -19,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/swc-project/pkgs.git"
+        "url": "git+https://github.com/node ./bin/swc-project/pkgs.git"
     },
     "keywords": [
         "swc",
