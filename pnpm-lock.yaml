@@ -61,8 +61,8 @@ importers:
         version: 0.7.4
     devDependencies:
       '@swc/cli':
-        specifier: ^0.3.6
-        version: 'link:'
+        specifier: ^0.1.43
+        version: 0.1.44(@swc/core@1.2.177)(chokidar@3.5.1)
       '@swc/core':
         specifier: ^1.2.66
         version: 1.2.177
@@ -2109,6 +2109,27 @@ packages:
       '@sinonjs/commons': 1.8.6
     dev: true
 
+  /@swc/cli@0.1.44(@swc/core@1.2.177)(chokidar@3.5.1):
+    resolution: {integrity: sha512-pCjzCPKsEDfD/JGrUajiErOyvLIslwfhr9RXeGkhxiv03dBGaw8y7yLTOiMgC2HsTNlJ1WJhTg4e/VpKCHOcwQ==}
+    engines: {node: '>= 12.13'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1.2.4
+      chokidar: ^3.0.0
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
+    dependencies:
+      '@swc/core': 1.2.177
+      chokidar: 3.5.1
+      commander: 7.2.0
+      convert-source-map: 1.9.0
+      fast-glob: 3.3.0
+      lodash: 4.17.21
+      slash: 3.0.0
+      source-map: 0.7.4
+    dev: true
+
   /@swc/core-android-arm-eabi@1.2.177:
     resolution: {integrity: sha512-jfdBSpDrrDLnI+bpwOUsl7UTjB7ZDQC5tIiNGErWgKSFOHxP31PSBe7S0HxfDKsGZF1THeWpsLG6oE8frbxDtA==}
     engines: {node: '>=10'}
@@ -3835,7 +3856,6 @@ packages:
   /commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
-    dev: false
 
   /comment-json@4.2.3:
     resolution: {integrity: sha512-SsxdiOf064DWoZLH799Ata6u7iV658A11PlWtZATDlXPpKGJnbJZ5Z24ybixAi+LUUqJ/GKowAejtC5GFUG7Tw==}
