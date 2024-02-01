@@ -16,6 +16,10 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
+    strategy:
+        matrix:
+          node-version: [16, 18, 20]
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -24,6 +28,8 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Test
         run: pnpm test
