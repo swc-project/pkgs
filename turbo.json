@@ -11,7 +11,8 @@
             "cache": false
         },
         "lint": {
-            "inputs": ["**/*.ts"]
+            "inputs": ["**/*.ts"],
+            "outputMode": "new-only"
         }
     }
 }
