@@ -26,7 +26,7 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Test
-        run: pnpm turbo test
+        run: pnpm test
 
   ci-done:
     name: Ok

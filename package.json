@@ -1,41 +1,42 @@
 {
-  "name": "swc-extra-packages-workspace",
-  "packageManager": "pnpm@8.6.7",
-  "private": true,
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/swc"
-  },
-  "scripts": {
-    "prepare": "husky install && git config feature.manyFiles true"
-  },
-  "lint-staged": {
-    "*.toml": [
-      "taplo format"
-    ],
-    "*.rs": [
-      "rustfmt --"
-    ],
-    "!(**/tests/**/*)*.js": [
-      "prettier --write"
-    ],
-    "!(**/tests/**/*)*.ts": [
-      "prettier --write"
-    ],
-    "!(**/tests/**/*)*.jsx": [
-      "prettier --write"
-    ],
-    "!(**/tests/**/*)*.tsx": [
-      "prettier --write"
-    ]
-  },
-  "devDependencies": {
-    "@taplo/cli": "^0.5.2",
-    "cross-env": "^7.0.3",
-    "cspell": "^6.31.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.3",
-    "prettier": "^2",
-    "turbo": "^1.10.7"
-  }
+    "name": "swc-extra-packages-workspace",
+    "packageManager": "pnpm@8.6.7",
+    "private": true,
+    "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/swc"
+    },
+    "scripts": {
+        "prepare": "husky install && git config feature.manyFiles true",
+        "test": "turbo test"
+    },
+    "lint-staged": {
+        "*.toml": [
+            "taplo format"
+        ],
+        "*.rs": [
+            "rustfmt --"
+        ],
+        "!(**/tests/**/*)*.js": [
+            "prettier --write"
+        ],
+        "!(**/tests/**/*)*.ts": [
+            "prettier --write"
+        ],
+        "!(**/tests/**/*)*.jsx": [
+            "prettier --write"
+        ],
+        "!(**/tests/**/*)*.tsx": [
+            "prettier --write"
+        ]
+    },
+    "devDependencies": {
+        "@taplo/cli": "^0.5.2",
+        "cross-env": "^7.0.3",
+        "cspell": "^6.31.1",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.3",
+        "prettier": "^2",
+        "turbo": "^1.10.7"
+    }
 }
