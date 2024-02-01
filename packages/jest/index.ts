@@ -80,9 +80,8 @@ function createTransformer(
             // @ts-expect-error - type overload is confused
             const baseCacheKey = cacheKeyFunction(src, filename, ...rest);
 
-            // @ts-expect-error - signature mismatch between Jest <27 og >=27
             const options: TransformOptions =
-                typeof rest[0] === "string" ? rest[1] : rest[0];
+                typeof rest[0] === "string" ? (rest as any)[1] : rest[0];
 
             return crypto
                 .createHash("sha1")

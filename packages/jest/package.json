@@ -7,10 +7,9 @@
     "homepage": "https://github.com/swc-project/pkgs/tree/main/packages/jest",
     "scripts": {
         "build": "tsc",
-        "test": "npm test --workspaces",
         "prepublishOnly": "npm run build && node scripts/publish_helper.js prepublish",
         "postpublish": "node scripts/publish_helper.js postpublish",
-        "lint": "eslint . --ext .ts && echo 'No lint errors found!'"
+        "lint": "eslint . --ext .ts"
     },
     "keywords": [],
     "author": "강동윤 <kdy1997.dev@gmail.com>",
