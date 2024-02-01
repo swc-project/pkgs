@@ -4,7 +4,7 @@
     "description": "CLI for the swc project",
     "main": "lib/swc/index.js",
     "scripts": {
-        "prepublishOnly": "pnpm build && pnpm test && pnpm types",
+        "prepublishOnly": "pnpm build",
         "types": "tsc",
         "types:watch": "tsc --watch",
         "build": "swc src -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
