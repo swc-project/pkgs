@@ -12,7 +12,7 @@ env:
 
 jobs:
   test:
-    name: Test
+    name: Test for Node ${{ matrix.node-version }}
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
