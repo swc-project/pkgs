@@ -92,7 +92,7 @@ describe("dirWorker", () => {
             options.filename,
             { sourceFileName: `../${options.filename}` },
             options.sync,
-            `${options.outDir}/${filename}.${options.outFileExtension}`
+            path.join(options.outDir, `${filename}.${options.outFileExtension}`)
         );
     });
 });
