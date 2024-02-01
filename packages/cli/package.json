@@ -1,6 +1,6 @@
 {
     "name": "@swc/cli",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "description": "CLI for the swc project",
     "main": "lib/swc/index.js",
     "scripts": {
@@ -55,7 +55,7 @@
         "source-map": "^0.7.3"
     },
     "devDependencies": {
-        "@swc/cli": "^0.1.43",
+        "@swc/cli": "^0.3.7",
         "@swc/core": "^1.2.66",
         "@swc/jest": "workspace:^",
         "@types/jest": "^29.5.0",
