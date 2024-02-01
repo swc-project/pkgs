@@ -56,7 +56,6 @@
         "source-map": "^0.7.3"
     },
     "devDependencies": {
-        "@swc/cli": "^0.1.43",
         "@swc/core": "^1.2.66",
         "@swc/jest": "^0.1.2",
         "@types/jest": "^29.5.0",
