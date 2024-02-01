@@ -12,13 +12,18 @@ env:
 
 jobs:
   test:
-    name: Test
+    name: Test for Node ${{ matrix.node-version }} on ${{ matrix.os }}
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [16, 18, 20]
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        node-version: [18, 20]
 
     steps:
       - name: Check out code
