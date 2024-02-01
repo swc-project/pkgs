@@ -1,0 +1,50 @@
+{
+    "targetDefaults": {
+        "prepublishOnly": {
+            "dependsOn": []
+        },
+        "types": {
+            "dependsOn": []
+        },
+        "types:watch": {
+            "dependsOn": []
+        },
+        "build": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "outputs": ["{projectRoot}/**/*.js"]
+        },
+        "build:watch": {
+            "dependsOn": []
+        },
+        "format:src": {
+            "dependsOn": []
+        },
+        "format:examples": {
+            "dependsOn": []
+        },
+        "format": {
+            "dependsOn": []
+        },
+        "test": {
+            "cache": true,
+            "dependsOn": ["build"]
+        },
+        "test:watch": {
+            "dependsOn": []
+        },
+        "test:coverage": {
+            "dependsOn": []
+        },
+        "postpublish": {
+            "dependsOn": []
+        },
+        "lint": {
+            "cache": true,
+            "dependsOn": []
+        },
+        "start": {
+            "dependsOn": []
+        }
+    }
+}

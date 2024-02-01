@@ -8,8 +8,8 @@
     },
     "scripts": {
         "prepare": "husky install && git config feature.manyFiles true",
-        "test": "turbo test",
-        "lint": "turbo lint"
+        "test": "lerna run test",
+        "lint": "lerna run lint"
     },
     "lint-staged": {
         "*.toml": [
@@ -39,8 +39,8 @@
         "cross-env": "^7.0.3",
         "cspell": "^6.31.1",
         "husky": "^8.0.3",
+        "lerna": "^8.0.2",
         "lint-staged": "^13.2.3",
-        "prettier": "^2",
-        "turbo": "^1.10.7"
+        "prettier": "^2"
     }
 }
