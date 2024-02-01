@@ -3,7 +3,8 @@
     "pipeline": {
         "build": {
             "inputs": ["**/*.ts"],
-            "outputs": ["**/*.js"]
+            "outputs": ["**/*.js"],
+            "outputMode": "new-only"
         },
         "test": {
             "dependsOn": ["build"],
