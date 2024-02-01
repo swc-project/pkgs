@@ -67,7 +67,7 @@ importers:
         specifier: ^1.2.66
         version: 1.2.177
       '@swc/jest':
-        specifier: ^0.2.33
+        specifier: link:../jest
         version: link:../jest
       '@types/jest':
         specifier: ^29.5.0
