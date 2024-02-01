@@ -2,6 +2,7 @@ import { Options } from "@swc/core";
 import handleCompile from "../dirWorker";
 import { CliOptions, DEFAULT_OUT_FILE_EXTENSION } from "../options";
 import * as utilModule from "../util";
+import path from "path";
 
 type HandleCompileOptions = {
     cliOptions: CliOptions;
@@ -64,7 +65,10 @@ describe("dirWorker", () => {
             options.filename,
             { sourceFileName: `../${options.filename}` },
             options.sync,
-            `${options.outDir}/${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
+            path.join(
+                options.outDir,
+                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
+            )
         );
     });
 });
