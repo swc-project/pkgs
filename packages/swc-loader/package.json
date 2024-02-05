@@ -14,5 +14,8 @@
     "peerDependencies": {
         "@swc/core": "^1.2.147",
         "webpack": ">=2"
+    },
+    "dependencies": {
+        "@swc/counter": "^0.1.2"
     }
 }
