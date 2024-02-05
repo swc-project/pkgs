@@ -29,6 +29,7 @@
     },
     "homepage": "https://swc.rs",
     "devDependencies": {
+        "@types/node": "^20.11.16",
         "typescript": "^5.2.2"
     },
     "bin": "bin/swc-info.js"
