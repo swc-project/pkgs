@@ -7,7 +7,7 @@
     "sideEffects": false,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/swc-project/swc.git"
+        "url": "git+https://github.com/swc-project/pkgs.git"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
