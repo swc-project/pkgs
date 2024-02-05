@@ -16,6 +16,6 @@
         "webpack": ">=2"
     },
     "dependencies": {
-        "@swc/counter": "^0.1.2"
+        "@swc/counter": "workspace:^"
     }
 }
