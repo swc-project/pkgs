@@ -6,8 +6,8 @@
     "sideEffects": false,
     "scripts": {
         "build": "tsc",
-        "prepublishOnly": "yarn build",
-        "prepack": "yarn build"
+        "prepublishOnly": "pnpm build",
+        "prepack": "pnpm build"
     },
     "repository": {
         "type": "git",
