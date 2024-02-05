@@ -1,5 +1,13 @@
 # @swc/cli
 
+## 0.3.9
+
+### Patch Changes
+
+-   a87f28d: Refactoring for @swc/counter
+-   Updated dependencies [a87f28d]
+    -   @swc/counter@0.1.3
+
 ## 0.3.8
 
 ### Patch Changes

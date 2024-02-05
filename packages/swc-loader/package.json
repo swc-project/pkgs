@@ -1,6 +1,6 @@
 {
     "name": "swc-loader",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "Webpack plugin for swc",
     "main": "src/index.js",
     "repository": "https://github.com/swc-project/pkgs",
@@ -16,6 +16,6 @@
         "webpack": ">=2"
     },
     "dependencies": {
-        "@swc/counter": "^0.1.2"
+        "@swc/counter": "workspace:^"
     }
 }

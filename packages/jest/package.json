@@ -1,6 +1,6 @@
 {
     "name": "@swc/jest",
-    "version": "0.2.35",
+    "version": "0.2.36",
     "description": "swc integration for jest",
     "main": "index.js",
     "types": "index.d.ts",
@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "@jest/create-cache-key-function": "^29.7.0",
-        "@swc/counter": "^0.1.2",
+        "@swc/counter": "workspace:^",
         "jsonc-parser": "^3.2.0"
     },
     "devDependencies": {

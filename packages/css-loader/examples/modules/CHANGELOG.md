@@ -1,5 +1,12 @@
 # swc-css-loader-css-modules-app
 
+## 1.0.3
+
+### Patch Changes
+
+-   Updated dependencies [a87f28d]
+    -   swc-loader@0.2.6
+
 ## 1.0.2
 
 ### Patch Changes
