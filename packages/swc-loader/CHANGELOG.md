@@ -1,5 +1,13 @@
 # swc-loader
 
+## 0.2.6
+
+### Patch Changes
+
+-   a87f28d: Refactoring for @swc/counter
+-   Updated dependencies [a87f28d]
+    -   @swc/counter@0.1.3
+
 ## 0.2.5
 
 ### Patch Changes
