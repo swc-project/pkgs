@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.3.8
+
+### Patch Changes
+
+-   40fa1bd: Depend on @swc/counter to track npm downloads correctly
+
 ## 0.3.7
 
 ### Patch Changes
