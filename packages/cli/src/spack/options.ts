@@ -9,25 +9,26 @@ export interface SpackCliOptions {
     debug: boolean;
 }
 
-commander.option("--config [path]", "Path to a spack.config.js file to use.");
+const program = new commander.Command();
+program.option("--config [path]", "Path to a spack.config.js file to use.");
 // TODO: allow using ts. See: https://github.com/swc-project/swc/issues/841
 
-commander.option("--mode <development | production | none>", "Mode to use");
-commander.option("--target [browser | node]", "Target runtime environment");
+program.option("--mode <development | production | none>", "Mode to use");
+program.option("--target [browser | node]", "Target runtime environment");
 
-commander.option(
+program.option(
     "--context [path]",
     `The base directory (absolute path!) for resolving the 'entry'` +
         ` option. If 'output.pathinfo' is set, the included pathinfo is shortened to this directory`,
     "The current directory"
 );
 
-commander.option("--entry [list]", "List of entries", collect);
+program.option("--entry [list]", "List of entries", collect);
 
-// commander.option('-W --watch', `Enter watch mode, which rebuilds on file change.`)
+// program.option('-W --watch', `Enter watch mode, which rebuilds on file change.`)
 
-commander.option("--debug", `Switch loaders to debug mode`);
-// commander.option('--devtool', `Select a developer tool to enhance debugging.`)
+program.option("--debug", `Switch loaders to debug mode`);
+// program.option('--devtool', `Select a developer tool to enhance debugging.`)
 
 // -d           shortcut for --debug --devtool eval-cheap-module-source-map
 //              --output-pathinfo                                          [여부]
@@ -40,11 +41,11 @@ commander.option("--debug", `Switch loaders to debug mode`);
 // --module-bind-pre   Bind an extension to a pre loader                 [문자열]
 
 // Output options:
-commander.option(
+program.option(
     "-o --output",
     `The output path and file for compilation assets`
 );
-commander.option("--output-path", `The output directory as **absolute path**`);
+program.option("--output-path", `The output directory as **absolute path**`);
 //   --output-filename             Specifies the name of each output file on disk.
 //                                 You must **not** specify an absolute path here!
 //                                 The `output.path` option determines the location
@@ -158,7 +159,7 @@ commander.option("--output-path", `The output directory as **absolute path**`);
 //   --silent       Prevent output from being displayed in stdout         [boolean]
 //   --json, -j     Prints the result as JSON.                            [boolean]
 
-commander.version(
+program.version(
     `@swc/cli: ${pkg.version}
 @swc/core: ${swcCoreVersion}`
 );
@@ -168,7 +169,7 @@ export default async function parseSpackArgs(args: string[]): Promise<{
     spackOptions: BundleOptions;
 }> {
     //
-    const cmd = commander.parse(args);
+    const cmd = program.parse(args);
     const opts = cmd.opts();
 
     const cliOptions: SpackCliOptions = {

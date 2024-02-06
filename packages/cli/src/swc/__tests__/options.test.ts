@@ -1,5 +1,8 @@
 import type { Options } from "@swc/core";
 import deepmerge from "deepmerge";
+import fs from "fs";
+
+jest.mock("fs");
 
 import parserArgs, { CliOptions, initProgram } from "../options";
 
@@ -56,6 +59,7 @@ describe("parserArgs", () => {
     beforeEach(() => {
         defaultResult = createDefaultResult();
         initProgram();
+        (fs as any).resetMockFiles();
     });
 
     it("minimal args returns default result", async () => {
@@ -91,7 +95,7 @@ describe("parserArgs", () => {
                 "src",
             ];
             const result = parserArgs(args);
-            expect(result.cliOptions.outFileExtension).toEqual("js");
+            expect(result!.cliOptions.outFileExtension).toEqual("js");
         });
     });
 
@@ -270,7 +274,7 @@ describe("parserArgs", () => {
             const expectedOptions = deepmerge(defaultResult.swcOptions, {
                 jsc: { transform: { react: { development: true } } },
             });
-            expect(result.swcOptions).toEqual(expectedOptions);
+            expect(result!.swcOptions).toEqual(expectedOptions);
         });
 
         it("react development and commonjs (two config options)", async () => {
@@ -288,7 +292,7 @@ describe("parserArgs", () => {
                 jsc: { transform: { react: { development: true } } },
                 module: { type: "commonjs" },
             });
-            expect(result.swcOptions).toEqual(expectedOptions);
+            expect(result!.swcOptions).toEqual(expectedOptions);
         });
 
         it("react development and commonjs (comma-separated)", async () => {
@@ -304,7 +308,7 @@ describe("parserArgs", () => {
                 jsc: { transform: { react: { development: true } } },
                 module: { type: "commonjs" },
             });
-            expect(result.swcOptions).toEqual(expectedOptions);
+            expect(result!.swcOptions).toEqual(expectedOptions);
         });
 
         it("no equals sign", async () => {
@@ -319,7 +323,110 @@ describe("parserArgs", () => {
             const expectedOptions = deepmerge(defaultResult.swcOptions, {
                 no_equals: true,
             });
-            expect(result.swcOptions).toEqual(expectedOptions);
+            expect(result!.swcOptions).toEqual(expectedOptions);
+        });
+    });
+
+    describe("--cli-config-file", () => {
+        it("reads a JSON config file with both camel and kebab case options", async () => {
+            (fs as any).setMockFile(
+                "/swc/cli.json",
+                JSON.stringify({
+                    outFileExtension: "mjs",
+                    deleteDirOnStart: "invalid",
+                    "delete-dir-on-start": true,
+                })
+            );
+
+            const args = [
+                "node",
+                "/path/to/node_modules/swc-cli/bin/swc.js",
+                "src",
+                "--cli-config-file",
+                "/swc/cli.json",
+            ];
+            const result = parserArgs(args);
+            const expectedOptions = deepmerge(defaultResult, {
+                cliOptions: { outFileExtension: "mjs", deleteDirOnStart: true },
+            });
+
+            expect(result).toEqual(expectedOptions);
+        });
+
+        it("reads a JSON but options are overriden from CLI", async () => {
+            (fs as any).setMockFile(
+                "/swc/cli.json",
+                JSON.stringify({
+                    outFileExtension: "mjs",
+                    "delete-dir-on-start": true,
+                })
+            );
+
+            const args = [
+                "node",
+                "/path/to/node_modules/swc-cli/bin/swc.js",
+                "src",
+                "--cli-config-file",
+                "/swc/cli.json",
+                "--out-file-extension",
+                "cjs",
+            ];
+            const result = parserArgs(args);
+            const expectedOptions = deepmerge(defaultResult, {
+                cliOptions: { outFileExtension: "cjs", deleteDirOnStart: true },
+            });
+
+            expect(result).toEqual(expectedOptions);
+        });
+
+        describe("exits", () => {
+            let mockExit: jest.SpyInstance;
+            let mockConsoleError: jest.SpyInstance;
+
+            beforeEach(() => {
+                mockExit = jest
+                    .spyOn(process, "exit")
+                    // @ts-expect-error
+                    .mockImplementation(() => {});
+                mockConsoleError = jest
+                    .spyOn(console, "error")
+                    .mockImplementation(() => {});
+            });
+
+            afterEach(() => {
+                mockExit.mockRestore();
+                mockConsoleError.mockRestore();
+            });
+
+            it("if the config file is missing", async () => {
+                const args = [
+                    "node",
+                    "/path/to/node_modules/swc-cli/bin/swc.js",
+                    "src",
+                    "--cli-config-file",
+                    "/swc/cli.json",
+                ];
+
+                parserArgs(args);
+                expect(mockExit).toHaveBeenCalledWith(2);
+                expect(mockConsoleError).toHaveBeenCalledTimes(2);
+            });
+
+            it("if the config file is not valid JSON", async () => {
+                (fs as any).setMockFile("/swc/cli.json", "INVALID");
+
+                const args = [
+                    "node",
+                    "/path/to/node_modules/swc-cli/bin/swc.js",
+                    "src",
+                    "--cli-config-file",
+                    "/swc/cli.json",
+                ];
+
+                parserArgs(args);
+                expect(mockExit).toHaveBeenCalledWith(2);
+                expect(mockConsoleError).toHaveBeenCalledTimes(2);
+            });
         });
     });
 });
