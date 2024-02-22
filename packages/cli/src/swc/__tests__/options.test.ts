@@ -1,6 +1,7 @@
 import type { Options } from "@swc/core";
 import deepmerge from "deepmerge";
 import fs from "fs";
+import { resolve } from "path";
 
 jest.mock("fs");
 
@@ -330,7 +331,7 @@ describe("parserArgs", () => {
     describe("--cli-config-file", () => {
         it("reads a JSON config file with both camel and kebab case options", async () => {
             (fs as any).setMockFile(
-                "/swc/cli.json",
+                resolve(process.cwd(), "/swc/cli.json"),
                 JSON.stringify({
                     outFileExtension: "mjs",
                     deleteDirOnStart: "invalid",
@@ -355,7 +356,7 @@ describe("parserArgs", () => {
 
         it("reads a JSON but options are overriden from CLI", async () => {
             (fs as any).setMockFile(
-                "/swc/cli.json",
+                resolve(process.cwd(), "/swc/cli.json"),
                 JSON.stringify({
                     outFileExtension: "mjs",
                     "delete-dir-on-start": true,
