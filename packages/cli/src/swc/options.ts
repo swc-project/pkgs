@@ -1,6 +1,8 @@
-import commander from "commander";
+import commander, { Command, OptionValues } from "commander";
 import { version as swcCoreVersion } from "@swc/core";
 import type { Options } from "@swc/core";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
 const DEFAULT_EXTENSIONS = [
     ".js",
@@ -16,7 +18,7 @@ const DEFAULT_EXTENSIONS = [
 
 const pkg = require("../../package.json");
 
-let program: commander.Command;
+let program: Command;
 export const DEFAULT_OUT_FILE_EXTENSION = "js";
 
 export const initProgram = () => {
@@ -33,6 +35,12 @@ export const initProgram = () => {
     );
 
     program.option("--config-file [path]", "Path to a .swcrc file to use");
+
+    program.option(
+        "--cli-config-file [path]",
+        "Path to a JSON file containing CLI options. " +
+            "Options provided directly via command line override the ones in the configuration file."
+    );
 
     program.option(
         "--env-name [name]",
@@ -168,6 +176,69 @@ function unstringify(val: string): any {
     }
 }
 
+function loadCLIConfigFile(
+    program: Command,
+    opts: OptionValues,
+    path: string
+): OptionValues {
+    let configOpts: OptionValues;
+    let contents: string;
+
+    // Parse the JSON file
+    try {
+        contents = readFileSync(resolve(process.cwd(), path), "utf-8");
+    } catch (e) {
+        throw new Error(`Cannot read CLI config file "${path}".`);
+    }
+
+    try {
+        configOpts = JSON.parse(contents);
+    } catch (e) {
+        throw new Error(
+            `CLI config file "${path}" is not a well-formed JSON file.`
+        );
+    }
+
+    // Convert kebab case options in camel case one
+    configOpts = Object.fromEntries(
+        Object.entries(configOpts).map(([key, value]) => {
+            const camelCaseKey = key.replace(/(-[-a-z])/g, (_, m) =>
+                m.substring(1).toUpperCase()
+            );
+            return [camelCaseKey, value];
+        })
+    );
+
+    // Split existing options in default and provided one
+    const defaults = [];
+    const provided = [];
+
+    for (const pair of Object.entries(opts)) {
+        if (program.getOptionValueSource(pair[0]) === "default") {
+            defaults.push(pair);
+        } else {
+            provided.push(pair);
+        }
+    }
+
+    // Merge options back with right priority
+    return {
+        ...Object.fromEntries(defaults),
+        ...configOpts,
+        ...Object.fromEntries(provided),
+    };
+}
+
+function verifyArgsErrors(errors: string[]): void {
+    if (errors.length) {
+        console.error("swc:");
+        for (const error of errors) {
+            console.error("  " + error);
+        }
+        process.exit(2);
+    }
+}
+
 function collect(
     value: string,
     previousValue?: string[]
@@ -207,7 +278,16 @@ export interface CliOptions {
 
 export default function parserArgs(args: string[]) {
     program.parse(args);
-    const opts = program.opts();
+    let opts = program.opts();
+
+    if (opts.cliConfigFile) {
+        try {
+            opts = loadCLIConfigFile(program, opts, opts.cliConfigFile);
+        } catch (e: any) {
+            verifyArgsErrors([e.message]);
+            return;
+        }
+    }
 
     const filenames = program.args;
     const errors = [];
@@ -253,13 +333,7 @@ export default function parserArgs(args: string[]) {
         }
     }
 
-    if (errors.length) {
-        console.error("swc:");
-        for (const error of errors) {
-            console.error("  " + error);
-        }
-        process.exit(2);
-    }
+    verifyArgsErrors(errors);
 
     const swcOptions: Options = {
         jsc: {
