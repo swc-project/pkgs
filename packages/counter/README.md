@@ -1,4 +1,4 @@
-# @swc/couter
+# @swc/counter
 
 Download counter for swc packages.
 
