@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.3.10
+
+### Patch Changes
+
+-   4c08bf8: feat(cli): Added cli-config-file option.
+
 ## 0.3.9
 
 ### Patch Changes
