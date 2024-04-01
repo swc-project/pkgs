@@ -1,14 +1,14 @@
 {
     "name": "@swc/cli",
-    "version": "0.3.11",
+    "version": "0.3.12",
     "description": "CLI for the swc project",
     "main": "lib/swc/index.js",
     "scripts": {
         "prepublishOnly": "pnpm build",
         "types": "tsc",
         "types:watch": "tsc --watch",
-        "build": "swc src -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
-        "build:watch": "swc src -d lib --watch --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
+        "build": "swc src --strip-leading-paths -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
+        "build:watch": "swc src --strip-leading-paths -d lib --watch --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
         "format:src": "prettier --write src",
         "format:examples": "prettier --write examples",
         "format": "pnpm format:src && pnpm format:examples",
