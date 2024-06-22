@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.3.13
+
+### Patch Changes
+
+-   9eb0a67: Support emitting '.d.ts' files
+
 ## 0.3.10
 
 ### Patch Changes
