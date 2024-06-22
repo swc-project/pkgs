@@ -64,8 +64,8 @@ importers:
         version: 0.7.4
     devDependencies:
       '@swc/cli':
-        specifier: '=0.3.12'
-        version: 0.3.12(@swc/core@1.6.4)(chokidar@3.5.1)
+        specifier: '=0.3.13'
+        version: 0.3.13(@swc/core@1.6.4)(chokidar@3.5.1)
       '@swc/core':
         specifier: ^1.6.4
         version: 1.6.4
@@ -2301,8 +2301,8 @@ packages:
       '@sinonjs/commons': 1.8.6
     dev: true
 
-  /@swc/cli@0.3.12(@swc/core@1.6.4)(chokidar@3.5.1):
-    resolution: {integrity: sha512-h7bvxT+4+UDrLWJLFHt6V+vNAcUNii2G4aGSSotKz1ECEk4MyEh5CWxmeSscwuz5K3i+4DWTgm4+4EyMCQKn+g==}
+  /@swc/cli@0.3.13(@swc/core@1.6.4)(chokidar@3.5.1):
+    resolution: {integrity: sha512-vkgeAT6yb25+ZQXrAKYpv0ZHQRkhua/XsCJ/ksDz0Rx4W5h2Icq2qQVMtu10wvRd1al6mbot2HrJrpZsHqNyPA==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
