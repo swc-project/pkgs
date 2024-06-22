@@ -1,6 +1,6 @@
 import slash from "slash";
 import { promises } from "fs";
-import { dirname, relative } from "path";
+import { dirname, relative, basename, join } from "path";
 import { transformFile, transformFileSync } from "@swc/core";
 import type { Options, Output } from "@swc/core";
 
@@ -32,10 +32,29 @@ function withSourceMap(
         relative(destDir, sourceMapPath)
     )}`;
 
+    let dts: string | undefined;
+
+    // TODO: Remove once fixed in core
+    if ((output as any).output) {
+        const json = JSON.parse((output as any).output);
+
+        if (json.__swc_isolated_declarations__) {
+            dts = json.__swc_isolated_declarations__;
+        }
+    }
+
+    let dtsPath: string | undefined;
+
+    if (dts) {
+        dtsPath = join(destDir, basename(destFile) + ".d.ts");
+    }
+
     return {
         sourceMap: output.map,
         sourceMapPath,
         sourceCode: output.code,
+        dts,
+        dtsPath,
     };
 }
 
@@ -47,24 +66,24 @@ export async function outputResult(
 ) {
     const destDir = dirname(destFile);
 
-    const { sourceMap, sourceMapPath, sourceCode } = withSourceMap(
-        output,
-        options,
-        destFile,
-        destDir
-    );
+    const { sourceMap, sourceMapPath, sourceCode, dts, dtsPath } =
+        withSourceMap(output, options, destFile, destDir);
 
     await mkdir(destDir, { recursive: true });
     const { mode } = await stat(sourceFile);
 
-    if (!sourceMapPath) {
-        await writeFile(destFile, sourceCode, { mode });
-    } else {
-        await Promise.all([
-            writeFile(destFile, sourceCode, { mode }),
-            writeFile(sourceMapPath, sourceMap!, { mode }),
-        ]);
-    }
+    const dtsPromise = dts
+        ? writeFile(dtsPath!, dts, { mode })
+        : Promise.resolve();
+    const sourceMapPromise = sourceMapPath
+        ? writeFile(sourceMapPath, sourceMap!, { mode })
+        : Promise.resolve();
+
+    await Promise.all([
+        writeFile(destFile, sourceCode, { mode }),
+        dtsPromise,
+        sourceMapPromise,
+    ]);
 }
 
 export async function compile(
