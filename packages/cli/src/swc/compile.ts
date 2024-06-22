@@ -12,26 +12,6 @@ function withSourceMap(
     destFile: string,
     destDir: string
 ) {
-    if (!output.map || options.sourceMaps === "inline") {
-        return {
-            sourceCode: output.code,
-        };
-    }
-    // TODO: remove once fixed in core https://github.com/swc-project/swc/issues/1388
-    const sourceMap = JSON.parse(output.map);
-    if (options.sourceFileName) {
-        sourceMap["sources"][0] = options.sourceFileName;
-    }
-    if (options.sourceRoot) {
-        sourceMap["sourceRoot"] = options.sourceRoot;
-    }
-    output.map = JSON.stringify(sourceMap);
-
-    const sourceMapPath = destFile + ".map";
-    output.code += `\n//# sourceMappingURL=${slash(
-        relative(destDir, sourceMapPath)
-    )}`;
-
     let dts: string | undefined;
 
     // TODO: Remove once fixed in core
@@ -48,6 +28,28 @@ function withSourceMap(
     if (dts) {
         dtsPath = join(destDir, basename(destFile) + ".d.ts");
     }
+
+    if (!output.map || options.sourceMaps === "inline") {
+        return {
+            sourceCode: output.code,
+            dts,
+            dtsPath,
+        };
+    }
+    // TODO: remove once fixed in core https://github.com/swc-project/swc/issues/1388
+    const sourceMap = JSON.parse(output.map);
+    if (options.sourceFileName) {
+        sourceMap["sources"][0] = options.sourceFileName;
+    }
+    if (options.sourceRoot) {
+        sourceMap["sourceRoot"] = options.sourceRoot;
+    }
+    output.map = JSON.stringify(sourceMap);
+
+    const sourceMapPath = destFile + ".map";
+    output.code += `\n//# sourceMappingURL=${slash(
+        relative(destDir, sourceMapPath)
+    )}`;
 
     return {
         sourceMap: output.map,
