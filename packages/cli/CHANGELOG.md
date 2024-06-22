@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.3.14
+
+### Patch Changes
+
+-   fe87a42: Fix dts support
+
 ## 0.3.13
 
 ### Patch Changes
