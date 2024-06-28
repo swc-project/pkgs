@@ -88,9 +88,15 @@ describe("dirWorker", () => {
                 map: "map",
             },
             sourceFile: `${filename}.ts`,
-            destFile: `outDir/${filename}.${DEFAULT_OUT_FILE_EXTENSION}`,
-            destDtsFile: `outDir/${filename}.d.ts`,
-            destSourcemapFile: `outDir/${filename}.${DEFAULT_OUT_FILE_EXTENSION}.map`,
+            destFile: path.join(
+                options.outDir,
+                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
+            ),
+            destDtsFile: path.join(options.outDir, `${filename}.d.ts`),
+            destSourcemapFile: path.join(
+                options.outDir,
+                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}.map`
+            ),
             options: { sourceFileName: `../${options.filename}` },
         });
     });
