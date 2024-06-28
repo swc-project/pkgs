@@ -2,6 +2,7 @@ import { Options } from "@swc/core";
 import handleCompile from "../dirWorker";
 import { CliOptions, DEFAULT_OUT_FILE_EXTENSION } from "../options";
 import * as utilModule from "../util";
+import * as compileModule from "../compile";
 import path from "path";
 
 type HandleCompileOptions = {
@@ -44,8 +45,18 @@ const createHandleCompileOptions = (
 
 jest.mock("../util", () => ({
     ...jest.requireActual("../util"),
-    compile: jest.fn(),
+    compile: jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ code: "code", map: "map" })),
 }));
+
+jest.mock("../compile", () => ({
+    outputResult: jest.fn(),
+}));
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
 
 describe("dirWorker", () => {
     it('should call "compile" with the "DEFAULT_OUT_FILE_EXTENSION" when "outFileExtension" is undefined', async () => {
@@ -70,11 +81,21 @@ describe("dirWorker", () => {
                 `${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
             )
         );
-    });
-});
 
-describe("dirWorker", () => {
-    it('should call "compile" with "outFileExtension" when undefined', async () => {
+        expect(compileModule.outputResult).toHaveBeenCalledWith({
+            output: {
+                code: "code",
+                map: "map",
+            },
+            sourceFile: `${filename}.ts`,
+            destFile: `outDir/${filename}.${DEFAULT_OUT_FILE_EXTENSION}`,
+            destDtsFile: `outDir/${filename}.d.ts`,
+            destSourcemapFile: `outDir/${filename}.${DEFAULT_OUT_FILE_EXTENSION}.map`,
+            options: { sourceFileName: `../${options.filename}` },
+        });
+    });
+
+    it('should call "compile" with "outFileExtension" when it is set in options', async () => {
         const filename = "test";
         const options = createHandleCompileOptions({
             filename: `${filename}.ts`,
