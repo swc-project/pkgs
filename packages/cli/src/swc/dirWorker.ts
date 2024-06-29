@@ -29,7 +29,21 @@ export default async function handleCompile(opts: {
     const result = await compile(opts.filename, options, opts.sync, dest);
 
     if (result) {
-        await outputResult(result, opts.filename, dest, options);
+        const destDts = getDest(
+            opts.filename,
+            opts.outDir,
+            opts.cliOptions.stripLeadingPaths,
+            `.d.ts`
+        );
+        const destSourcemap = dest + ".map";
+        await outputResult({
+            output: result,
+            sourceFile: opts.filename,
+            destFile: dest,
+            destDtsFile: destDts,
+            destSourcemapFile: destSourcemap,
+            options,
+        });
         return CompileStatus.Compiled;
     } else {
         return CompileStatus.Omitted;

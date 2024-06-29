@@ -1,6 +1,6 @@
 import slash from "slash";
 import { promises } from "fs";
-import { dirname, relative, basename, join } from "path";
+import { dirname, relative } from "path";
 import { transformFile, transformFileSync } from "@swc/core";
 import type { Options, Output } from "@swc/core";
 
@@ -9,7 +9,7 @@ const { mkdir, stat, writeFile } = promises;
 function withSourceMap(
     output: Output,
     options: Options,
-    destFile: string,
+    sourceMapFile: string,
     destDir: string
 ) {
     let dts: string | undefined;
@@ -23,17 +23,10 @@ function withSourceMap(
         }
     }
 
-    let dtsPath: string | undefined;
-
-    if (dts) {
-        dtsPath = join(destDir, basename(destFile) + ".d.ts");
-    }
-
     if (!output.map || options.sourceMaps === "inline") {
         return {
             sourceCode: output.code,
             dts,
-            dtsPath,
         };
     }
     // TODO: remove once fixed in core https://github.com/swc-project/swc/issues/1388
@@ -46,39 +39,49 @@ function withSourceMap(
     }
     output.map = JSON.stringify(sourceMap);
 
-    const sourceMapPath = destFile + ".map";
     output.code += `\n//# sourceMappingURL=${slash(
-        relative(destDir, sourceMapPath)
+        relative(destDir, sourceMapFile)
     )}`;
 
     return {
         sourceMap: output.map,
-        sourceMapPath,
         sourceCode: output.code,
         dts,
-        dtsPath,
     };
 }
 
-export async function outputResult(
-    output: Output,
-    sourceFile: string,
-    destFile: string,
-    options: Options
-) {
+export async function outputResult({
+    output,
+    sourceFile,
+    destFile,
+    destDtsFile,
+    destSourcemapFile,
+    options,
+}: {
+    output: Output;
+    sourceFile: string;
+    destFile: string;
+    destDtsFile: string;
+    destSourcemapFile: string;
+    options: Options;
+}) {
     const destDir = dirname(destFile);
 
-    const { sourceMap, sourceMapPath, sourceCode, dts, dtsPath } =
-        withSourceMap(output, options, destFile, destDir);
+    const { sourceMap, sourceCode, dts } = withSourceMap(
+        output,
+        options,
+        destSourcemapFile,
+        destDir
+    );
 
     await mkdir(destDir, { recursive: true });
     const { mode } = await stat(sourceFile);
 
     const dtsPromise = dts
-        ? writeFile(dtsPath!, dts, { mode })
+        ? writeFile(destDtsFile, dts, { mode })
         : Promise.resolve();
-    const sourceMapPromise = sourceMapPath
-        ? writeFile(sourceMapPath, sourceMap!, { mode })
+    const sourceMapPromise = sourceMap
+        ? writeFile(destSourcemapFile, sourceMap, { mode })
         : Promise.resolve();
 
     await Promise.all([
