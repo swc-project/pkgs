@@ -1,0 +1,35 @@
+name: Publish (npm)
+
+on:
+  push:
+    branches:
+      - main
+      - ci
+
+env:
+  CI: 1
+
+jobs:
+  publish-npm:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - run: |
+          corepack enable
+          pnpm i
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm publish -r --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
