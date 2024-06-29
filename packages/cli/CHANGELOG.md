@@ -1,5 +1,15 @@
 # @swc/cli
 
+## 0.4.0
+
+### Minor Changes
+
+-   7be1ded: Fix destination filename for .d.ts
+
+### Patch Changes
+
+-   0a01d6d: Fix output file for declarations.
+
 ## 0.3.14
 
 ### Patch Changes
