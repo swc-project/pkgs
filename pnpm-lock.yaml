@@ -160,6 +160,12 @@ importers:
         specifier: ^4.5.3
         version: 4.5.3
 
+  packages/next-swc-minifier-backport:
+    devDependencies:
+      '@swc/core':
+        specifier: ^1.6.4
+        version: 1.6.4
+
   packages/swc-info:
     devDependencies:
       '@types/node':
