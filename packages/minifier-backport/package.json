@@ -14,5 +14,8 @@
         "url": "https://github.com/swc-project/pkgs/issues"
     },
     "homepage": "https://swc.rs",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "dependencies": {
+        "patch-package": "^8.0.0"
+    }
 }
