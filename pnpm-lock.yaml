@@ -160,7 +160,7 @@ importers:
         specifier: ^4.5.3
         version: 4.5.3
 
-  packages/minifier-backport:
+  packages/next-swc-minifier-backport:
     dependencies:
       patch-package:
         specifier: ^8.0.0
