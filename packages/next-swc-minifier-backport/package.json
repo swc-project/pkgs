@@ -1,5 +1,5 @@
 {
-    "name": "next-swc-minifier-backport",
+    "name": "@swc/next-minifier-backport",
     "version": "0.1.0",
     "description": "Backport SWC Minifier without the need to upgrade Next.js",
     "main": "index.js",
@@ -15,7 +15,11 @@
     },
     "homepage": "https://swc.rs",
     "license": "Apache-2.0",
-    "dependencies": {
-        "patch-package": "^8.0.0"
+    "dependencies": {},
+    "devDependencies": {
+        "@swc/core": "^1.6.4"
+    },
+    "peerDependencies": {
+        "@swc/core": "^1.6.4"
     }
 }
