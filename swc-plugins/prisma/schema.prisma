@@ -141,12 +141,14 @@ model CompatRange {
   updatedAt DateTime            @updatedAt
   runtimes  SwcRuntimeVersion[]
   plugins   SwcPluginVersion[]
+
+  @@unique([from, to])
 }
 
 /// Plugin runner
 model SwcRuntime {
   id        BigInt              @id @default(autoincrement())
-  name      String
+  name      String              @unique
   createdAt DateTime            @default(now())
   updatedAt DateTime            @updatedAt
   versions  SwcRuntimeVersion[]
@@ -161,11 +163,13 @@ model SwcRuntimeVersion {
   compatRangeId BigInt
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@unique([runtimeId, version])
 }
 
 model SwcPlugin {
   id        BigInt             @id @default(autoincrement())
-  name      String
+  name      String             @unique
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
   versions  SwcPluginVersion[]
@@ -180,4 +184,6 @@ model SwcPluginVersion {
   compatRangeId BigInt
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@unique([pluginId, version])
 }
