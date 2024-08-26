@@ -1,5 +1,14 @@
 "use client";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { apiClient } from "@/lib/trpc/web-client";
 
 export default function Page({
@@ -18,15 +27,25 @@ export default function Page({
         <kbd>{compatRange.to}</kbd>
       </h1>
 
-      <h2 className="text-xl font-bold">Runtimes</h2>
-      <ul>
-        {compatRange.runtimes.map((runtime) => (
-          <li key={runtime.name}>
-            <kbd>{runtime.name}</kbd>
-            <kbd>{runtime.minVersion}</kbd> - <kbd>{runtime.maxVersion}</kbd>
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <TableCaption>Runtime Version Ranges</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[200px]">Runtime</TableHead>
+            <TableHead>Minimum Version</TableHead>
+            <TableHead>Maximum Version</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {compatRange.runtimes.map((runtime) => (
+            <TableRow key={runtime.name}>
+              <TableCell className="font-medium">{runtime.name}</TableCell>
+              <TableCell>{runtime.minVersion}</TableCell>
+              <TableCell>{runtime.maxVersion}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <h2 className="text-xl font-bold">Plugins</h2>
       <ul>
