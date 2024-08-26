@@ -1,0 +1,8 @@
+*.d.ts
+/lib/generated
+/components/ui
+
+
+# TODO: Fix eslint config
+app/
+lib/
