@@ -122,11 +122,7 @@ export const compatRangeRouter = router({
       });
 
       for (const range of versions) {
-        if (semver.lt(version, range.from)) {
-          continue;
-        }
-
-        if (semver.gte(version, range.to)) {
+        if (semver.gt(version, range.from) && semver.lt(version, range.to)) {
           return range;
         }
       }
@@ -160,7 +156,8 @@ function merge(ranges: { name: string; version: string }[]): VersionRange[] {
  * @param newValue semver
  */
 function mergeVersion(min: string, max: string, newValue: string) {
-  const minVersion = semver.lt(min, newValue) ? min : newValue;
+  const minVersion =
+    min !== "0.0.0" && semver.lt(min, newValue) ? min : newValue;
   const maxVersion = semver.gt(max, newValue) ? max : newValue;
 
   return { min: minVersion, max: maxVersion };
