@@ -34,13 +34,6 @@ export async function POST(req: NextRequest) {
   });
   const api = await createCaller();
 
-  const items: {
-    runtimeId: bigint;
-    version: string;
-    compatRangeId: bigint;
-    swcCoreVersion: string;
-  }[] = [];
-
   for (const version of versions) {
     const compatRange = await api.compatRange.byVersion({
       version: version.swcCoreVersion,
@@ -50,19 +43,32 @@ export async function POST(req: NextRequest) {
       continue;
     }
 
-    items.push({
-      runtimeId: rt.id,
-      // Just to ensure it's a valid semver
-      version: version.version.replace("v", ""),
-      compatRangeId: compatRange.id,
-      // Just to ensure it's a valid semver
-      swcCoreVersion: version.swcCoreVersion.replace("v", ""),
-    });
+    try {
+      await db.swcRuntimeVersion.upsert({
+        where: {
+          runtimeId_version: {
+            runtimeId: rt.id,
+            version: version.version.replace("v", ""),
+          },
+        },
+        update: {
+          compatRangeId: compatRange.id,
+          swcCoreVersion: version.swcCoreVersion.replace("v", ""),
+        },
+        create: {
+          runtimeId: rt.id,
+          version: version.version.replace("v", ""),
+          compatRangeId: compatRange.id,
+          swcCoreVersion: version.swcCoreVersion.replace("v", ""),
+        },
+      });
+    } catch (e) {
+      console.error(
+        `Failed to create compat range for ${version.swcCoreVersion}: ${e}`
+      );
+      continue;
+    }
   }
-
-  await db.swcRuntimeVersion.createMany({
-    data: items,
-  });
 
   return NextResponse.json({
     ok: true,

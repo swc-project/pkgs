@@ -155,16 +155,18 @@ model SwcRuntime {
 }
 
 model SwcRuntimeVersion {
-  id             BigInt      @id @default(autoincrement())
-  runtime        SwcRuntime  @relation(fields: [runtimeId], references: [id], onDelete: Cascade)
-  runtimeId      BigInt
-  version        String
-  /// The version of `swc_core` used by the plugin.
-  swcCoreVersion String
-  compatRange    CompatRange @relation(fields: [compatRangeId], references: [id])
-  compatRangeId  BigInt
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  id                     BigInt      @id @default(autoincrement())
+  runtime                SwcRuntime  @relation(fields: [runtimeId], references: [id], onDelete: Cascade)
+  runtimeId              BigInt
+  version                String
+  /// The version of `swc_core` used by the runtime.
+  swcCoreVersion         String
+  /// The version of `swc_plugin_runner` used by the runtime.
+  swcPluginRunnerVersion String?
+  compatRange            CompatRange @relation(fields: [compatRangeId], references: [id])
+  compatRangeId          BigInt
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
 
   @@unique([runtimeId, version])
 }

@@ -26,7 +26,7 @@ export default async function Page() {
     });
   }
 
-  const runtimes = ["@swc/core", "next", "rspack"];
+  const runtimes = ["@swc/core", "next", "rspack", "farm"];
 
   for (const runtime of runtimes) {
     await db.swcRuntime.upsert({

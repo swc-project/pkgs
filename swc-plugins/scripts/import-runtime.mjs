@@ -27,7 +27,7 @@ console.log("Cargo.lock path:", cargoLockPath);
 console.log("Relative path to Cargo.lock:", relativePathToCargoLock);
 
 // Get all git tags
-const gitTags = (await $$`git tag`.text()).split("\n");
+const gitTags = (await $$`git tag`.text()).trim().split("\n").reverse();
 
 const data = {
   runtime: runtimeName,
@@ -62,7 +62,7 @@ for (const tag of gitTags) {
     }
 
     // Send the data to the server
-    if (data.versions.length >= 20) {
+    if (data.versions.length >= 10) {
       await fetch("http://localhost:50000/import/runtime", {
         method: "POST",
         headers: {
