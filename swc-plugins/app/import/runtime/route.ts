@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   const api = await createCaller();
 
   for (const version of versions) {
-    const compatRange = await api.compatRange.byVersion({
+    const compatRange = await api.compatRange.byCoreVersion({
       version: version.swcCoreVersion,
     });
     if (!compatRange) {
