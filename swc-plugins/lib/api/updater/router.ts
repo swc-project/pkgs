@@ -45,47 +45,51 @@ export const updaterRouter = router({
       const api = await (await import("@/lib/api/server")).createCaller(ctx);
 
       for (const pkg of input.pkgs) {
-        const plugin = await db.swcPlugin.upsert({
-          where: {
-            name: pkg.name,
-          },
-          create: {
-            name: pkg.name,
-          },
-          update: {},
-        });
-
-        for (const version of pkg.versions) {
-          const swcCoreVersion = version.swcCoreVersion;
-          const compatRange = await api.compatRange.byCoreVersion({
-            version: swcCoreVersion,
-          });
-
-          if (!compatRange) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: `Compat range not found for SWC core version ${swcCoreVersion}`,
-            });
-          }
-
-          await db.swcPluginVersion.upsert({
+        try {
+          const plugin = await db.swcPlugin.upsert({
             where: {
-              pluginId_version: {
-                pluginId: plugin.id,
-                version: version.version,
-              },
+              name: pkg.name,
             },
             create: {
-              pluginId: plugin.id,
-              version: version.version,
-              compatRangeId: compatRange.id,
-              swcCoreVersion,
+              name: pkg.name,
             },
-            update: {
-              compatRangeId: compatRange.id,
-              swcCoreVersion,
-            },
+            update: {},
           });
+
+          for (const version of pkg.versions) {
+            const swcCoreVersion = version.swcCoreVersion;
+            const compatRange = await api.compatRange.byCoreVersion({
+              version: swcCoreVersion,
+            });
+
+            if (!compatRange) {
+              throw new TRPCError({
+                code: "NOT_FOUND",
+                message: `Compat range not found for SWC core version ${swcCoreVersion}`,
+              });
+            }
+
+            await db.swcPluginVersion.upsert({
+              where: {
+                pluginId_version: {
+                  pluginId: plugin.id,
+                  version: version.version,
+                },
+              },
+              create: {
+                pluginId: plugin.id,
+                version: version.version,
+                compatRangeId: compatRange.id,
+                swcCoreVersion,
+              },
+              update: {
+                compatRangeId: compatRange.id,
+                swcCoreVersion,
+              },
+            });
+          }
+        } catch (e) {
+          console.error(`Error updating wasm plugins for ${pkg.name}`, e);
         }
       }
     }),
@@ -117,45 +121,49 @@ export const updaterRouter = router({
       }
 
       for (const pkg of input.pkgs) {
-        const runtime = await db.swcRuntime.upsert({
-          where: {
-            name: pkg.name,
-          },
-          create: {
-            name: pkg.name,
-          },
-          update: {},
-        });
-
-        for (const version of pkg.versions) {
-          const swcCoreVersion = version.swcCoreVersion;
-          const compatRange = byVersion(swcCoreVersion);
-
-          if (!compatRange) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: `Compat range not found for SWC core version ${swcCoreVersion}`,
-            });
-          }
-
-          await db.swcRuntimeVersion.upsert({
+        try {
+          const runtime = await db.swcRuntime.upsert({
             where: {
-              runtimeId_version: {
-                runtimeId: runtime.id,
-                version: version.version,
-              },
+              name: pkg.name,
             },
             create: {
-              runtimeId: runtime.id,
-              version: version.version,
-              compatRangeId: compatRange.id,
-              swcCoreVersion,
+              name: pkg.name,
             },
-            update: {
-              compatRangeId: compatRange.id,
-              swcCoreVersion,
-            },
+            update: {},
           });
+
+          for (const version of pkg.versions) {
+            const swcCoreVersion = version.swcCoreVersion;
+            const compatRange = byVersion(swcCoreVersion);
+
+            if (!compatRange) {
+              throw new TRPCError({
+                code: "NOT_FOUND",
+                message: `Compat range not found for SWC core version ${swcCoreVersion}`,
+              });
+            }
+
+            await db.swcRuntimeVersion.upsert({
+              where: {
+                runtimeId_version: {
+                  runtimeId: runtime.id,
+                  version: version.version,
+                },
+              },
+              create: {
+                runtimeId: runtime.id,
+                version: version.version,
+                compatRangeId: compatRange.id,
+                swcCoreVersion,
+              },
+              update: {
+                compatRangeId: compatRange.id,
+                swcCoreVersion,
+              },
+            });
+          }
+        } catch (e) {
+          console.error(`Error updating runtimes for ${pkg.name}`, e);
         }
       }
     }),

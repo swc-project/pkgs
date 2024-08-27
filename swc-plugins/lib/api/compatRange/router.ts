@@ -29,6 +29,7 @@ export const compatRangeRouter = router({
     .input(
       z.object({
         id: z.bigint(),
+        includePrerelease: z.boolean().default(false),
       })
     )
     .output(
@@ -40,7 +41,7 @@ export const compatRangeRouter = router({
         runtimes: z.array(VersionRangeSchema),
       })
     )
-    .query(async ({ ctx, input: { id } }) => {
+    .query(async ({ ctx, input: { id, includePrerelease } }) => {
       const range = await db.compatRange.findUnique({
         where: {
           id: id,
@@ -50,6 +51,17 @@ export const compatRangeRouter = router({
           from: true,
           to: true,
           plugins: {
+            where: {
+              ...(includePrerelease
+                ? {}
+                : {
+                    version: {
+                      not: {
+                        contains: "-",
+                      },
+                    },
+                  }),
+            },
             select: {
               id: true,
               version: true,
@@ -61,6 +73,17 @@ export const compatRangeRouter = router({
             },
           },
           runtimes: {
+            where: {
+              ...(includePrerelease
+                ? {}
+                : {
+                    version: {
+                      not: {
+                        contains: "-",
+                      },
+                    },
+                  }),
+            },
             select: {
               id: true,
               version: true,
