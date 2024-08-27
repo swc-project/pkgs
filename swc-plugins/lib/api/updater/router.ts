@@ -63,10 +63,10 @@ export const updaterRouter = router({
             });
 
             if (!compatRange) {
-              throw new TRPCError({
-                code: "NOT_FOUND",
-                message: `Compat range not found for SWC core version ${swcCoreVersion}`,
-              });
+              console.error(
+                `Compat range not found for SWC core version ${swcCoreVersion}`
+              );
+              continue;
             }
 
             await db.swcPluginVersion.upsert({
@@ -137,10 +137,10 @@ export const updaterRouter = router({
             const compatRange = byVersion(swcCoreVersion);
 
             if (!compatRange) {
-              throw new TRPCError({
-                code: "NOT_FOUND",
-                message: `Compat range not found for SWC core version ${swcCoreVersion}`,
-              });
+              console.error(
+                `Compat range not found for SWC core version ${swcCoreVersion}`
+              );
+              continue;
             }
 
             await db.swcRuntimeVersion.upsert({
