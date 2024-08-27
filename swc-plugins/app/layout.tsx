@@ -1,3 +1,4 @@
+import { Dynamic } from "@/components/dynamic";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
@@ -28,7 +29,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <NextTopLoader color={"var(--colors-primary)"} />
 
         <SessionProvider>
-          <ClientProviders>{children}</ClientProviders>
+          <ClientProviders>
+            <main className="flex h-screen w-full flex-col items-center justify-center align-middle">
+              <Dynamic>{children}</Dynamic>
+            </main>
+          </ClientProviders>
         </SessionProvider>
         <Toaster />
       </body>

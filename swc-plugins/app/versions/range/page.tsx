@@ -11,7 +11,7 @@ export default async function Page() {
       <ul>
         {ranges.map((range) => (
           <li key={range.id}>
-            <Link href={`/compat/range/${range.id}`}>
+            <Link href={`/versions/range/${range.id}`}>
               <kbd>swc_core</kbd>@<kbd>{range.from}</kbd> -{" "}
               <kbd>{range.to}</kbd>
             </Link>
