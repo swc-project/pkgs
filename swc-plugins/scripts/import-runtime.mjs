@@ -36,7 +36,7 @@ const data = {
 
 // For each tag, get the content of `${runtimeDir}/Cargo.lock`.
 for (const tag of gitTags) {
-  let tagVersion = tag.replace("v", "");
+  let tagVersion = tag.replace("v", "").replace("@farmfe/core@", "");
   if (!semver.valid(tagVersion)) {
     console.log(`Skipping tag ${tag} because it is not a valid semver`);
     continue;
