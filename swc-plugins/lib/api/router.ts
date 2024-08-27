@@ -3,6 +3,7 @@ import { router } from "@/lib/base";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { compatRangeRouter } from "./compatRange/router";
 import { runtimeRouter } from "./runtimes/router";
+import { updaterRouter } from "./updater/router";
 import { userRouter } from "./users/router";
 
 export const apiRouter = router({
@@ -10,6 +11,8 @@ export const apiRouter = router({
 
   runtime: runtimeRouter,
   compatRange: compatRangeRouter,
+
+  updater: updaterRouter,
 });
 
 export type ApiRouter = typeof apiRouter;

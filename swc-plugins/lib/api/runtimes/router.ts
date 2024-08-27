@@ -47,6 +47,9 @@ export const runtimeRouter = router({
           version: true,
           compatRangeId: true,
         },
+        orderBy: {
+          version: "desc",
+        },
       });
 
       return versions;

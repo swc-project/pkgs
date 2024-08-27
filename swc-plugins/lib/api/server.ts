@@ -154,14 +154,18 @@ export function defineAbilitiesFor({ user }: { user: User | null }): Abilities {
 
 const factory = createCallerFactory(apiRouter);
 
-export const createCaller = async () => {
+export const createCaller = async (ctx?: Context) => {
+  if (ctx) {
+    return factory(ctx);
+  }
+
   const user: User | null = await getCurrentUser();
 
   const abilities = defineAbilitiesFor({
     user,
   });
 
-  const ctx: Context = {
+  const newCtx: Context = {
     getAccessToken() {
       const h = headers();
       const auth = h.get("authorization");
@@ -172,5 +176,5 @@ export const createCaller = async () => {
     responseHeaders: null,
     isAdmin: false,
   };
-  return factory(ctx);
+  return factory(newCtx);
 };
