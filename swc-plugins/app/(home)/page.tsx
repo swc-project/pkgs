@@ -1,83 +1,33 @@
-"use client";
-
-import { useState } from "react";
-
+import { Logo } from "@/components/logo";
+import { RuntimeVersionSelector } from "@/components/runtime-version-selector";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { apiClient } from "@/lib/trpc/web-client";
+import { Metadata } from "next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { FC } from "react";
 
-export default function Home() {
-  const [runtimes] = apiClient.runtime.list.useSuspenseQuery();
+export const metadata: Metadata = {
+  title: "SWC Plugins",
+  description: "A collection of SWC plugins, ready to use in your project.",
+};
 
-  const [selectedRuntime, setSelectedRuntime] = useState<bigint>();
-
-  return (
-    <div className="flex w-full max-w-md flex-col space-y-4">
-      <div className="flex space-x-4">
-        <Select onValueChange={(e) => setSelectedRuntime(BigInt(e))}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select runtime" />
-          </SelectTrigger>
-          <SelectContent>
-            {runtimes.map((runtime) => (
-              <SelectItem
-                key={runtime.id.toString()}
-                value={runtime.id.toString()}
-              >
-                {runtime.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {selectedRuntime && <VersionSelector runtimeId={selectedRuntime} />}
+const Home: FC = () => (
+  <main className="flex h-screen w-full flex-col items-center justify-center align-middle">
+    <div className="flex flex-col items-center gap-8">
+      <Logo />
+      <div className="flex flex-col gap-2">
+        <h1 className="max-w-[330px] text-center text-3xl font-bold leading-tight tracking-tighter md:min-w-[540px] md:text-4xl lg:leading-[1.1]">
+          SWC Plugins
+        </h1>
+        <p className="text-muted-foreground max-w-[750px] text-center text-lg">
+          A collection of SWC plugins, ready to use in your project.
+        </p>
       </div>
-      <div className="flex justify-center">
-        <Link href={`/versions/range`} passHref>
-          <Button
-            variant="secondary"
-            size="default"
-            className="whitespace-nowrap"
-          >
-            See all versions
-          </Button>
-        </Link>
-      </div>
+      <RuntimeVersionSelector />
+      <Button variant="link" asChild>
+        <Link href="/versions/range">or see all versions</Link>
+      </Button>
     </div>
-  );
-}
+  </main>
+);
 
-function VersionSelector({ runtimeId }: { runtimeId: bigint }) {
-  const router = useRouter();
-  const versions = apiClient.runtime.listVersions.useQuery({
-    runtimeId,
-  });
-
-  return (
-    <Select
-      onValueChange={(e) => {
-        const selected = versions.data?.find((v) => v.version === e);
-        router.push(`/versions/range/${selected?.compatRangeId}`);
-      }}
-    >
-      <SelectTrigger className="w-[120px]">
-        <SelectValue placeholder="Version" />
-      </SelectTrigger>
-      <SelectContent>
-        {versions.data?.map((version) => (
-          <SelectItem key={version.version} value={version.version}>
-            {version.version}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
+export default Home;

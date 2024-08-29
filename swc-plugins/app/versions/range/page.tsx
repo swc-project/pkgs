@@ -1,26 +1,19 @@
 import { createCaller } from "@/lib/server";
-import Link from "next/link";
-
-export default async function Page() {
-  const api = await createCaller();
-  const ranges = await api.compatRange.list();
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Compat Ranges</h1>
-      <ul>
-        {ranges.map((range) => (
-          <li key={range.id}>
-            <Link href={`/versions/range/${range.id}`}>
-              <kbd>swc_core</kbd>@<kbd>{range.from}</kbd> -{" "}
-              <kbd>{range.to}</kbd>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+import { Metadata } from "next";
+import { RangeTable } from "./components/range-table";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
+export const metadata: Metadata = {
+  title: "Compat Ranges",
+  description: "A list of compat ranges for SWC plugins.",
+};
+
+const RangePage = async () => {
+  const api = await createCaller();
+  const ranges = await api.compatRange.list();
+
+  return <RangeTable ranges={ranges} />;
+};
+
+export default RangePage;
