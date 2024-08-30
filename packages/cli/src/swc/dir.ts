@@ -1,6 +1,8 @@
 import { existsSync, promises } from "fs";
 import { dirname, resolve } from "path";
 import Piscina from "piscina";
+import { stderr } from "process";
+import { format } from "util";
 import { CompileStatus } from "./constants";
 import { CliOptions } from "./options";
 import { exists, getDest } from "./util";
@@ -196,13 +198,14 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
         if (copied) {
             message += `copied ${copied} ${copied > 1 ? "files" : "file"}`;
         }
-        message += ` with swc (%dms)`;
+        message += ` with swc (%dms)\n`;
+        message = format(message, (end[1] / 1000000).toFixed(2));
 
-        console.log(message, (end[1] / 1000000).toFixed(2));
+        stderr.write(message);
     }
 
     if (failed) {
-        console.log(
+        console.error(
             `Failed to compile ${failed} ${
                 failed !== 1 ? "files" : "file"
             } with swc.`
@@ -276,9 +279,11 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
                     });
                     if (!quiet && result === CompileStatus.Compiled) {
                         const end = process.hrtime(start);
-                        console.log(
-                            `Successfully compiled ${filename} with swc (%dms)`,
-                            (end[1] / 1000000).toFixed(2)
+                        stderr.write(
+                            format(
+                                `Successfully compiled ${filename} with swc (%dms)\n`,
+                                (end[1] / 1000000).toFixed(2)
+                            )
                         );
                     }
                 } catch (err: any) {
@@ -294,9 +299,11 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
                     );
                     if (!quiet && result === CompileStatus.Copied) {
                         const end = process.hrtime(start);
-                        console.log(
-                            `Successfully copied ${filename} with swc (%dms)`,
-                            (end[1] / 1000000).toFixed(2)
+                        stderr.write(
+                            format(
+                                `Successfully copied ${filename} with swc (%dms)\n`,
+                                (end[1] / 1000000).toFixed(2)
+                            )
                         );
                     }
                 } catch (err: any) {
