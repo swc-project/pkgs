@@ -1,6 +1,8 @@
 import { existsSync, promises } from "fs";
 import { dirname, resolve } from "path";
 import Piscina from "piscina";
+import { stderr } from "process";
+import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
 import { exists, getDest } from "./util";
@@ -208,14 +210,14 @@ async function initialCompilation(
         if (copied) {
             message += `copied ${copied} ${copied > 1 ? "files" : "file"}`;
         }
-        message += ` with swc (%dms)`;
+        message += format(" with swc (%dms)\n", duration.toFixed(2));
 
         if (callbacks?.onSuccess) {
             if (!failed) {
                 callbacks.onSuccess({ duration, compiled, copied });
             }
         } else if (!quiet) {
-            console.log(message, duration.toFixed(2));
+            stderr.write(message);
         }
     }
 
@@ -223,7 +225,7 @@ async function initialCompilation(
         if (callbacks?.onFail) {
             callbacks.onFail({ duration, reasons });
         } else {
-            console.log(
+            console.error(
                 `Failed to compile ${failed} ${
                     failed !== 1 ? "files" : "file"
                 } with swc.`
@@ -316,9 +318,11 @@ async function watchCompilation(
                                 filename,
                             });
                         } else if (!quiet) {
-                            console.log(
-                                `Successfully compiled ${filename} with swc (%dms)`,
-                                duration.toFixed(2)
+                            stderr.write(
+                                format(
+                                    `Successfully compiled ${filename} with swc (%dms)\n`,
+                                    duration.toFixed(2)
+                                )
                             );
                         }
                     }
@@ -353,9 +357,11 @@ async function watchCompilation(
                                 filename,
                             });
                         } else if (!quiet) {
-                            console.log(
-                                `Successfully copied ${filename} with swc (%dms)`,
-                                duration.toFixed(2)
+                            stderr.write(
+                                format(
+                                    `Successfully copied ${filename} with swc (%dms)\n`,
+                                    duration.toFixed(2)
+                                )
                             );
                         }
                     }
