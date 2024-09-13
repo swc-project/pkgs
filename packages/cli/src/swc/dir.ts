@@ -101,7 +101,9 @@ async function initialCompilation(
                 });
                 results.set(filename, result);
             } catch (err: any) {
-                console.error(err.message);
+                if (!callbacks?.onFail) {
+                    console.error(err.message);
+                }
                 results.set(filename, CompileStatus.Failed);
             }
         }
@@ -114,7 +116,9 @@ async function initialCompilation(
                 );
                 results.set(filename, result);
             } catch (err: any) {
-                console.error(err.message);
+                if (!callbacks?.onFail) {
+                    console.error(err.message);
+                }
                 results.set(filename, CompileStatus.Failed);
             }
         }
