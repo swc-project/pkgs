@@ -2,7 +2,7 @@ import { existsSync, promises } from "fs";
 import { dirname, resolve } from "path";
 import Piscina from "piscina";
 import { CompileStatus } from "./constants";
-import { CliOptions } from "./options";
+import { Callbacks, CliOptions } from "./options";
 import { exists, getDest } from "./util";
 import handleCompile from "./dirWorker";
 import {
@@ -53,7 +53,11 @@ async function beforeStartCompilation(cliOptions: CliOptions) {
     }
 }
 
-async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
+async function initialCompilation(
+    cliOptions: CliOptions,
+    swcOptions: Options,
+    callbacks?: Callbacks
+) {
     const {
         includeDotfiles,
         filenames,
@@ -70,6 +74,7 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
     } = cliOptions;
 
     const results = new Map<string, CompileStatus>();
+    const reasons = new Map<string, string>();
 
     const start = process.hrtime();
     const sourceFiles = await globSources(
@@ -83,7 +88,6 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
         extensions,
         copyFiles
     );
-
     if (sync) {
         for (const filename of compilable) {
             try {
@@ -134,7 +138,9 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
                             outFileExtension,
                         })
                         .catch(err => {
-                            console.error(err.message);
+                            if (!callbacks?.onFail) {
+                                console.error(err.message);
+                            }
                             throw err;
                         })
                 )
@@ -151,6 +157,7 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
                     results.set(filename, result.value);
                 } else {
                     results.set(filename, CompileStatus.Failed);
+                    reasons.set(filename, result.reason.message);
                 }
             });
 
@@ -182,8 +189,9 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
                 break;
         }
     }
+    const duration = end[1] / 1000000;
 
-    if (!quiet && compiled + copied) {
+    if (compiled + copied) {
         let message = "";
         if (compiled) {
             message += `Successfully compiled: ${compiled} ${
@@ -198,26 +206,40 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
         }
         message += ` with swc (%dms)`;
 
-        console.log(message, (end[1] / 1000000).toFixed(2));
+        if (callbacks?.onSuccess) {
+            if (!failed) {
+                callbacks.onSuccess({ duration, compiled, copied });
+            }
+        } else if (!quiet) {
+            console.log(message, duration.toFixed(2));
+        }
     }
 
     if (failed) {
-        console.log(
-            `Failed to compile ${failed} ${
-                failed !== 1 ? "files" : "file"
-            } with swc.`
-        );
-        if (!watch) {
-            const files = Array.from(results.entries())
-                .filter(([, status]) => status === CompileStatus.Failed)
-                .map(([filename, _]) => filename)
-                .join("\n");
-            throw new Error(`Failed to compile:\n${files}`);
+        if (callbacks?.onFail) {
+            callbacks.onFail({ duration, reasons });
+        } else {
+            console.log(
+                `Failed to compile ${failed} ${
+                    failed !== 1 ? "files" : "file"
+                } with swc.`
+            );
+            if (!watch) {
+                const files = Array.from(results.entries())
+                    .filter(([, status]) => status === CompileStatus.Failed)
+                    .map(([filename, _]) => filename)
+                    .join("\n");
+                throw new Error(`Failed to compile:\n${files}`);
+            }
         }
     }
 }
 
-async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
+async function watchCompilation(
+    cliOptions: CliOptions,
+    swcOptions: Options,
+    callbacks?: Callbacks
+) {
     const {
         includeDotfiles,
         filenames,
@@ -232,7 +254,9 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
 
     const watcher = await watchSources(filenames, includeDotfiles);
     watcher.on("ready", () => {
-        if (!quiet) {
+        if (callbacks?.onWatchReady) {
+            callbacks.onWatchReady();
+        } else if (!quiet) {
             console.info("Watching for file changes.");
         }
     });
@@ -264,8 +288,13 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
     for (const type of ["add", "change"]) {
         watcher.on(type, async filename => {
             if (isCompilableExtension(filename, extensions)) {
+                const start = process.hrtime();
+                const getDuration = () => {
+                    const end = process.hrtime(start);
+                    const duration = end[1] / 1000000;
+                    return duration;
+                };
                 try {
-                    const start = process.hrtime();
                     const result = await handleCompile({
                         filename,
                         outDir,
@@ -274,34 +303,67 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
                         swcOptions,
                         outFileExtension,
                     });
-                    if (!quiet && result === CompileStatus.Compiled) {
-                        const end = process.hrtime(start);
-                        console.log(
-                            `Successfully compiled ${filename} with swc (%dms)`,
-                            (end[1] / 1000000).toFixed(2)
-                        );
+                    const duration = getDuration();
+                    if (result === CompileStatus.Compiled) {
+                        if (callbacks?.onSuccess) {
+                            callbacks.onSuccess({
+                                duration,
+                                compiled: 1,
+                                filename,
+                            });
+                        } else if (!quiet) {
+                            console.log(
+                                `Successfully compiled ${filename} with swc (%dms)`,
+                                duration.toFixed(2)
+                            );
+                        }
                     }
-                } catch (err: any) {
-                    console.error(err.message);
+                } catch (error: any) {
+                    if (callbacks?.onFail) {
+                        const reasons = new Map<string, string>();
+                        reasons.set(filename, error.message);
+                        callbacks.onFail({ duration: getDuration(), reasons });
+                    } else {
+                        console.error(error.message);
+                    }
                 }
             } else if (copyFiles) {
+                const start = process.hrtime();
+                const getDuration = () => {
+                    const end = process.hrtime(start);
+                    const duration = end[1] / 1000000;
+                    return duration;
+                };
                 try {
-                    const start = process.hrtime();
                     const result = await handleCopy(
                         filename,
                         outDir,
                         stripLeadingPaths
                     );
-                    if (!quiet && result === CompileStatus.Copied) {
-                        const end = process.hrtime(start);
-                        console.log(
-                            `Successfully copied ${filename} with swc (%dms)`,
-                            (end[1] / 1000000).toFixed(2)
-                        );
+                    if (result === CompileStatus.Copied) {
+                        const duration = getDuration();
+                        if (callbacks?.onSuccess) {
+                            callbacks.onSuccess({
+                                duration,
+                                copied: 1,
+                                filename,
+                            });
+                        } else if (!quiet) {
+                            console.log(
+                                `Successfully copied ${filename} with swc (%dms)`,
+                                duration.toFixed(2)
+                            );
+                        }
                     }
-                } catch (err: any) {
-                    console.error(`Failed to copy ${filename}`);
-                    console.error(err.message);
+                } catch (error: any) {
+                    if (callbacks?.onFail) {
+                        const reasons = new Map<string, string>();
+                        reasons.set(filename, error.message);
+                        callbacks.onFail({ duration: getDuration(), reasons });
+                    } else {
+                        console.error(`Failed to copy ${filename}`);
+                        console.error(error.message);
+                    }
                 }
             }
         });
@@ -311,16 +373,18 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
 export default async function dir({
     cliOptions,
     swcOptions,
+    callbacks,
 }: {
     cliOptions: CliOptions;
     swcOptions: Options;
+    callbacks?: Callbacks;
 }) {
     const { watch } = cliOptions;
 
     await beforeStartCompilation(cliOptions);
-    await initialCompilation(cliOptions, swcOptions);
+    await initialCompilation(cliOptions, swcOptions, callbacks);
 
     if (watch) {
-        await watchCompilation(cliOptions, swcOptions);
+        await watchCompilation(cliOptions, swcOptions, callbacks);
     }
 }
