@@ -276,6 +276,22 @@ export interface CliOptions {
     readonly ignore: string[];
 }
 
+export interface Callbacks {
+    readonly onSuccess?: (data: {
+        duration: number;
+        /** count of compiled files */
+        compiled?: number;
+        /** count of copied files */
+        copied?: number;
+        filename?: string;
+    }) => any;
+    readonly onFail?: (data: {
+        duration: number;
+        reasons: Map<string, string>;
+    }) => any;
+    readonly onWatchReady?: () => any;
+}
+
 export default function parserArgs(args: string[]) {
     program.parse(args);
     let opts = program.opts();
