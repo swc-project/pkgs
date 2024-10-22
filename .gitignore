@@ -132,3 +132,7 @@ dist
 .DS_Store
 
 .nx/cache
+
+
+.turbo/
+generated/
