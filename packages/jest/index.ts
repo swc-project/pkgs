@@ -144,7 +144,7 @@ function buildSwcTransformOpts(
             computedSwcOptions,
             "jsc.target",
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            nodeTargetDefaults.get(process.version.match(/v(\d+)/)![1]) ||
+            nodeTargetDefaults.get(process.version?.match(/v(\d+)/)![1]) ||
                 "es2018"
         );
     }
