@@ -1,5 +1,11 @@
 # @swc/jest
 
+## 0.2.37
+
+### Patch Changes
+
+-   eca4f6b: Return es2018 in the event that process.version is undefined.
+
 ## 0.2.36
 
 ### Patch Changes
