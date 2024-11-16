@@ -1,7 +1,7 @@
 import { existsSync, promises } from "fs";
 import { dirname, resolve } from "path";
 import Piscina from "piscina";
-import { stderr } from "process";
+import { stdout } from "process";
 import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
@@ -217,7 +217,7 @@ async function initialCompilation(
                 callbacks.onSuccess({ duration, compiled, copied });
             }
         } else if (!quiet) {
-            stderr.write(message);
+            stdout.write(message);
         }
     }
 
@@ -318,7 +318,7 @@ async function watchCompilation(
                                 filename,
                             });
                         } else if (!quiet) {
-                            stderr.write(
+                            stdout.write(
                                 format(
                                     `Successfully compiled ${filename} with swc (%dms)\n`,
                                     duration.toFixed(2)
@@ -357,7 +357,7 @@ async function watchCompilation(
                                 filename,
                             });
                         } else if (!quiet) {
-                            stderr.write(
+                            stdout.write(
                                 format(
                                     `Successfully copied ${filename} with swc (%dms)\n`,
                                     duration.toFixed(2)
