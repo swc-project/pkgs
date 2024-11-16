@@ -2,7 +2,7 @@ import * as swc from "@swc/core";
 import slash from "slash";
 import { mkdirSync, writeFileSync, promises } from "fs";
 import { dirname, join, relative } from "path";
-import { stderr } from "process";
+import { stdout } from "process";
 
 export async function exists(path: string): Promise<boolean> {
     let pathExists = true;
@@ -114,7 +114,7 @@ export function assertCompilationResult<T>(
     }
     if (!quiet && compiled + copied > 0) {
         const copyResult = copied === 0 ? " " : ` (copied ${copied}) `;
-        stderr.write(
+        stdout.write(
             `Successfully compiled ${compiled} ${
                 compiled !== 1 ? "files" : "file"
             }${copyResult}with swc.\n`
