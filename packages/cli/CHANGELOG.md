@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.5.1
+
+### Patch Changes
+
+-   aaec3de: @swc/cli: Switch to using @xhmikosr/bin-wrapper
+
 ## 0.5.0
 
 ### Minor Changes
