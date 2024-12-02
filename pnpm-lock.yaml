@@ -51,8 +51,8 @@ importers:
         specifier: ^9.0.3
         version: 9.0.3
       piscina:
-        specifier: ^4.3.0
-        version: 4.3.0
+        specifier: ^4.3.1
+        version: 4.3.1
       semver:
         specifier: ^7.3.8
         version: 7.5.3
@@ -64,7 +64,7 @@ importers:
         version: 0.7.4
     devDependencies:
       '@swc/cli':
-        specifier: 0.5.0
+        specifier: 0.5.1
         version: 'link:'
       '@swc/core':
         specifier: ^1.6.4
@@ -8251,12 +8251,6 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
     dev: true
-
-  /piscina@4.3.0:
-    resolution: {integrity: sha512-vTQszGZj78p0BHFNO/cSvpzPUYa4tLXRe30aIYyQjqRS3fK/kPqdxvkTfGXQlEpWOI+mOOkda0iEY6NaanLWJA==}
-    optionalDependencies:
-      nice-napi: 1.0.2
-    dev: false
 
   /piscina@4.3.1:
     resolution: {integrity: sha512-MBj0QYm3hJQ/C/wIXTN1OCYC8uQ4BBJ4LVele2P4ZwVQAH04vkk8E1SpDbuemLAL1dZorbuOob9rYqJeWCcCRg==}
