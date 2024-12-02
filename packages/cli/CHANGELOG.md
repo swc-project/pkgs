@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.5.2
+
+### Patch Changes
+
+-   591c6c8: Bump piscina to 4.3.1
+
 ## 0.5.1
 
 ### Patch Changes
