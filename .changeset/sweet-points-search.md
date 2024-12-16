@@ -1,5 +1,5 @@
 ---
-"@swc/cli": patch
+"@swc/cli": minor
 ---
 
 update chokidara to V4
