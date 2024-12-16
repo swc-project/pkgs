@@ -2,4 +2,4 @@
 "@swc/cli": minor
 ---
 
-update chokidara to V4
+update chokidar to V4
