@@ -1,6 +1,6 @@
 {
     "name": "@swc/cli",
-    "version": "0.5.2",
+    "version": "0.6.0",
     "description": "CLI for the swc project",
     "main": "lib/swc/index.js",
     "scripts": {
@@ -56,14 +56,14 @@
         "source-map": "^0.7.3"
     },
     "devDependencies": {
-        "@swc/cli": "0.5.2",
+        "@swc/cli": "0.6.0",
         "@swc/core": "^1.6.4",
         "@swc/jest": "workspace:^",
         "@swc/types": "^0.1.9",
         "@types/jest": "^29.5.0",
         "@types/node": "^20.11.5",
         "@types/semver": "^7.3.13",
-        "chokidar": "^3.5.1",
+        "chokidar": "^4.0.1",
         "deepmerge": "^4.2.2",
         "jest": "^29.5.0",
         "ts-jest": "^29.0.5",
@@ -71,7 +71,7 @@
     },
     "peerDependencies": {
         "@swc/core": "^1.2.66",
-        "chokidar": "^3.5.1"
+        "chokidar": "^4.0.1"
     },
     "peerDependenciesMeta": {
         "chokidar": {
