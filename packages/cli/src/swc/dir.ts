@@ -256,9 +256,16 @@ async function watchCompilation(
         outFileExtension,
         quiet,
         sync,
+        only,
+        ignore,
     } = cliOptions;
 
-    const watcher = await watchSources(filenames, includeDotfiles);
+    const watcher = await watchSources(
+        filenames,
+        includeDotfiles,
+        only,
+        ignore
+    );
     watcher.on("ready", () => {
         if (callbacks?.onWatchReady) {
             callbacks.onWatchReady();
