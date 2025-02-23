@@ -1,7 +1,7 @@
 import * as swc from "@swc/core";
 import slash from "slash";
 import { mkdirSync, writeFileSync, promises } from "fs";
-import { dirname, join, relative } from "path";
+import { dirname, extname, join, relative } from "path";
 import { stderr } from "process";
 
 export async function exists(path: string): Promise<boolean> {
@@ -157,4 +157,24 @@ export function getDest(
         base = base.replace(/\.\w*$/, ext);
     }
     return join(outDir, base);
+}
+
+export function mapTsExt(filename: string) {
+    return (
+        {
+            ".ts": "js",
+            ".mts": "mjs",
+            ".cts": "cjs",
+        }[extname(filename)] ?? "js"
+    );
+}
+
+export function mapDtsExt(filename: string) {
+    return (
+        {
+            ".ts": "d.ts",
+            ".mts": "d.mts",
+            ".cts": "d.cts",
+        }[extname(filename)] ?? "d.ts"
+    );
 }

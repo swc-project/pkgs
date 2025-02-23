@@ -19,7 +19,6 @@ const DEFAULT_EXTENSIONS = [
 const pkg = require("../../package.json");
 
 let program: Command;
-export const DEFAULT_OUT_FILE_EXTENSION = "js";
 
 export const initProgram = () => {
     program = new commander.Command();
@@ -104,8 +103,7 @@ export const initProgram = () => {
 
     program.option(
         "--out-file-extension [string]",
-        "Use a specific extension for the output files [default: js]",
-        DEFAULT_OUT_FILE_EXTENSION
+        "Use a specific extension for the output files"
     );
 
     program.option(
@@ -267,7 +265,7 @@ export interface CliOptions {
     readonly extensions: string[];
     readonly watch: boolean;
     readonly copyFiles: boolean;
-    readonly outFileExtension: string;
+    readonly outFileExtension?: string;
     readonly includeDotfiles: boolean;
     readonly deleteDirOnStart: boolean;
     readonly quiet: boolean;
@@ -407,7 +405,7 @@ export default function parserArgs(args: string[]) {
         extensions: opts.extensions || DEFAULT_EXTENSIONS,
         watch: !!opts.watch,
         copyFiles: !!opts.copyFiles,
-        outFileExtension: opts.outFileExtension || DEFAULT_OUT_FILE_EXTENSION,
+        outFileExtension: opts.outFileExtension,
         includeDotfiles: !!opts.includeDotfiles,
         deleteDirOnStart: Boolean(opts.deleteDirOnStart),
         quiet: !!opts.quiet,

@@ -1,12 +1,11 @@
 import slash from "slash";
 import { dirname, relative } from "path";
 import { CompileStatus } from "./constants";
-import { compile, getDest } from "./util";
+import { compile, getDest, mapDtsExt, mapTsExt } from "./util";
 import { outputResult } from "./compile";
 
 import type { Options } from "@swc/core";
 import type { CliOptions } from "./options";
-import { DEFAULT_OUT_FILE_EXTENSION } from "./options";
 
 export default async function handleCompile(opts: {
     filename: string;
@@ -20,7 +19,7 @@ export default async function handleCompile(opts: {
         opts.filename,
         opts.outDir,
         opts.cliOptions.stripLeadingPaths,
-        `.${opts.outFileExtension ?? DEFAULT_OUT_FILE_EXTENSION}`
+        `.${opts.outFileExtension ?? mapTsExt(opts.filename)}`
     );
     const sourceFileName = slash(relative(dirname(dest), opts.filename));
 
@@ -33,7 +32,7 @@ export default async function handleCompile(opts: {
             opts.filename,
             opts.outDir,
             opts.cliOptions.stripLeadingPaths,
-            `.d.ts`
+            `.${mapDtsExt(opts.filename)}`
         );
         const destSourcemap = dest + ".map";
         await outputResult({

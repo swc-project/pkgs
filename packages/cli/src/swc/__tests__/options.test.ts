@@ -37,7 +37,7 @@ const createDefaultResult = (): ParserArgsReturn => ({
         outDir: undefined,
         // @ts-expect-error
         outFile: undefined,
-        outFileExtension: "js",
+        outFileExtension: undefined,
         quiet: false,
         sourceMapTarget: undefined,
         stripLeadingPaths: false,
@@ -87,16 +87,6 @@ describe("parserArgs", () => {
                 cliOptions: { outFileExtension: "magic_custom_extension" },
             });
             expect(result).toEqual(expectedOptions);
-        });
-
-        it("provides a sensible default", () => {
-            const args = [
-                "node",
-                "/path/to/node_modules/swc-cli/bin/swc.js",
-                "src",
-            ];
-            const result = parserArgs(args);
-            expect(result!.cliOptions.outFileExtension).toEqual("js");
         });
     });
 
