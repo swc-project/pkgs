@@ -1,6 +1,6 @@
 import { Options } from "@swc/core";
 import handleCompile from "../dirWorker";
-import { CliOptions, DEFAULT_OUT_FILE_EXTENSION } from "../options";
+import { CliOptions } from "../options";
 import * as utilModule from "../util";
 import * as compileModule from "../compile";
 import path from "path";
@@ -59,7 +59,7 @@ beforeEach(() => {
 });
 
 describe("dirWorker", () => {
-    it('should call "compile" with the "DEFAULT_OUT_FILE_EXTENSION" when "outFileExtension" is undefined', async () => {
+    it('should call "compile" with the corresponding extension when "outFileExtension" is undefined', async () => {
         const filename = "test";
         const options = createHandleCompileOptions({
             filename: `${filename}.ts`,
@@ -78,7 +78,7 @@ describe("dirWorker", () => {
             options.sync,
             path.join(
                 options.outDir,
-                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
+                `${filename}.${utilModule.mapTsExt(options.filename)}`
             )
         );
 
@@ -90,12 +90,15 @@ describe("dirWorker", () => {
             sourceFile: `${filename}.ts`,
             destFile: path.join(
                 options.outDir,
-                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}`
+                `${filename}.${utilModule.mapTsExt(filename)}`
             ),
-            destDtsFile: path.join(options.outDir, `${filename}.d.ts`),
+            destDtsFile: path.join(
+                options.outDir,
+                `${filename}.${utilModule.mapDtsExt(filename)}`
+            ),
             destSourcemapFile: path.join(
                 options.outDir,
-                `${filename}.${DEFAULT_OUT_FILE_EXTENSION}.map`
+                `${filename}.${utilModule.mapTsExt(filename)}.map`
             ),
             options: { sourceFileName: `../${options.filename}` },
         });

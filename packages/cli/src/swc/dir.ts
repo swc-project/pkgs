@@ -5,7 +5,7 @@ import { stderr } from "process";
 import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
-import { exists, getDest } from "./util";
+import { exists, getDest, mapTsExt } from "./util";
 import handleCompile from "./dirWorker";
 import {
     globSources,
@@ -270,13 +270,18 @@ async function watchCompilation(
         try {
             if (isCompilableExtension(filename, extensions)) {
                 await unlink(
-                    getDest(filename, outDir, stripLeadingPaths, ".js")
+                    getDest(
+                        filename,
+                        outDir,
+                        stripLeadingPaths,
+                        `.${mapTsExt(filename)}`
+                    )
                 );
                 const sourcemapPath = getDest(
                     filename,
                     outDir,
                     stripLeadingPaths,
-                    ".js.map"
+                    `.${mapTsExt(filename)}.map`
                 );
                 const sourcemapExists = await exists(sourcemapPath);
                 if (sourcemapExists) {
