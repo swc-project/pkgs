@@ -1,5 +1,15 @@
 # @swc/cli
 
+## 0.7.0
+
+### Minor Changes
+
+-   a031d35: update chokidar to V4
+
+### Patch Changes
+
+-   8baf346: Map typescript input extensions
+
 ## 0.5.2
 
 ### Patch Changes
