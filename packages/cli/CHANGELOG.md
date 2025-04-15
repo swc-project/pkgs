@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.2
+
+### Patch Changes
+
+-   d2eaca3: fix(cli): Add `names` to the source map
+
 ## 0.7.1
 
 ### Patch Changes
