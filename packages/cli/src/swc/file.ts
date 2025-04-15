@@ -48,6 +48,7 @@ export default async function ({
                             column: mapping.originalColumn,
                         },
                         source: mapping.source,
+                        name: mapping.name,
                     });
                 });
 
