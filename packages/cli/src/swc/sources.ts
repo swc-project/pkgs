@@ -107,7 +107,7 @@ export async function requireChokidar() {
 }
 
 export async function watchSources(
-    sources: string[],
+    filenames: string[],
     includeDotfiles = false,
     only: string[] = [],
     ignore: string[] = [],
