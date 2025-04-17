@@ -110,11 +110,11 @@ export async function watchSources(
     sources: string[],
     includeDotfiles = false,
     only: string[] = [],
-    ignore: string[] = [],
+    ignore: string[] = []
 ) {
     const chokidar = await requireChokidar();
     const sourceFiles = await globSources(
-        filenames,
+        sources,
         only,
         ignore,
         includeDotfiles
