@@ -171,7 +171,7 @@ function insertInstrumentationOptions(
     canInstrument: boolean,
     swcTransformOpts: Options,
     instrumentOptions?: any
-) {
+): Options {
     const shouldInstrument = jestOptions.instrument && canInstrument;
 
     if (!shouldInstrument) {
