@@ -39,7 +39,7 @@ function createTransformer(
         canInstrument: !!canInstrument, // Tell jest we'll instrument by our own
         process(src, filename, jestOptions) {
             // Determine if we actually instrument codes if jest runs with --coverage
-            insertInstrumentationOptions(
+            const swcOptionsForProcess = insertInstrumentationOptions(
                 jestOptions,
                 !!canInstrument,
                 computedSwcOptions,
@@ -47,9 +47,9 @@ function createTransformer(
             );
 
             return transformSync(src, {
-                ...computedSwcOptions,
+                ...swcOptionsForProcess,
                 module: {
-                    ...computedSwcOptions.module,
+                    ...swcOptionsForProcess.module,
                     type: jestOptions.supportsStaticESM
                         ? "es6"
                         : ("commonjs" as any),
@@ -58,7 +58,7 @@ function createTransformer(
             });
         },
         processAsync(src, filename, jestOptions) {
-            insertInstrumentationOptions(
+            const swcOptionsForProcess = insertInstrumentationOptions(
                 jestOptions,
                 !!canInstrument,
                 computedSwcOptions,
@@ -66,9 +66,9 @@ function createTransformer(
             );
 
             return transform(src, {
-                ...computedSwcOptions,
+                ...swcOptionsForProcess,
                 module: {
-                    ...computedSwcOptions.module,
+                    ...swcOptionsForProcess.module,
                     // async transform is always ESM
                     type: "es6" as any,
                 },
@@ -183,25 +183,25 @@ function insertInstrumentationOptions(
             (x) => x[0] === "swc-plugin-coverage-instrument"
         )
     ) {
-        return;
+        return swcTransformOpts;
     }
 
-    if (!swcTransformOpts.jsc) {
-        swcTransformOpts.jsc = {};
-    }
-
-    if (!swcTransformOpts.jsc.experimental) {
-        swcTransformOpts.jsc.experimental = {};
-    }
-
-    if (!Array.isArray(swcTransformOpts.jsc.experimental.plugins)) {
-        swcTransformOpts.jsc.experimental.plugins = [];
-    }
-
-    swcTransformOpts.jsc.experimental.plugins?.push([
-        "swc-plugin-coverage-instrument",
-        instrumentOptions ?? {},
-    ]);
+    return {
+        ...swcTransformOpts,
+        jsc: {
+            ...(swcTransformOpts?.jsc ?? {}),
+            experimental: {
+                ...(swcTransformOpts?.jsc?.experimental ?? {}),
+                plugins: [
+                    ...(swcTransformOpts?.jsc?.experimental?.plugins ?? []),
+                    [
+                        "swc-plugin-coverage-instrument",
+                        instrumentOptions ?? {},
+                    ],
+                ]
+            }
+        },
+    };
 }
 
 function set(obj: any, path: string, value: any) {
