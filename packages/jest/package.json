@@ -1,6 +1,6 @@
 {
     "name": "@swc/jest",
-    "version": "0.2.37",
+    "version": "0.2.38",
     "description": "swc integration for jest",
     "main": "index.js",
     "types": "index.d.ts",

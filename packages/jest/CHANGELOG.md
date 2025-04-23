@@ -1,5 +1,11 @@
 # @swc/jest
 
+## 0.2.38
+
+### Patch Changes
+
+-   a74d245: When using experimental instrumentation, swc options are no longer mutated so files not meant to get instrumentation do not
+
 ## 0.2.37
 
 ### Patch Changes
