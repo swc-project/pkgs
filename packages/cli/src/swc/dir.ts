@@ -5,7 +5,7 @@ import { stderr } from "process";
 import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
-import { exists, getDest, mapTsExt } from "./util";
+import { exists, getDest, mapTsExt, deepClone } from "./util";
 import handleCompile from "./dirWorker";
 import {
     globSources,
@@ -102,7 +102,7 @@ async function initialCompilation(
                     outFileExtension,
                 });
                 results.set(filename, result);
-            } catch (err: any) {
+            } catch (err) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -117,7 +117,7 @@ async function initialCompilation(
                     stripLeadingPaths
                 );
                 results.set(filename, result);
-            } catch (err: any) {
+            } catch (err) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -297,7 +297,7 @@ async function watchCompilation(
             } else if (copyFiles) {
                 await unlink(getDest(filename, outDir, stripLeadingPaths));
             }
-        } catch (err: any) {
+        } catch (err) {
             if (err.code !== "ENOENT") {
                 console.error(err.stack);
             }
@@ -338,7 +338,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error: any) {
+                } catch (error) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
@@ -377,7 +377,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error: any) {
+                } catch (error) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
@@ -401,12 +401,16 @@ export default async function dir({
     swcOptions: Options;
     callbacks?: Callbacks;
 }) {
-    const { watch } = cliOptions;
+    // Deep clone the options to ensure full isolation between multiple calls
+    const clonedCliOptions = deepClone(cliOptions);
+    const clonedSwcOptions = deepClone(swcOptions);
 
-    await beforeStartCompilation(cliOptions);
-    await initialCompilation(cliOptions, swcOptions, callbacks);
+    const { watch } = clonedCliOptions;
+
+    await beforeStartCompilation(clonedCliOptions);
+    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
 
     if (watch) {
-        await watchCompilation(cliOptions, swcOptions, callbacks);
+        await watchCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
     }
 }
