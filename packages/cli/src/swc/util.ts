@@ -31,7 +31,7 @@ export async function exists(path: string): Promise<boolean> {
     let pathExists = true;
     try {
         await promises.access(path);
-    } catch (err) {
+    } catch (err: any) {
         pathExists = false;
     }
     return pathExists;
@@ -102,7 +102,7 @@ export async function compile(
             result.map = JSON.stringify(sourceMap);
         }
         return result;
-    } catch (err) {
+    } catch (err: any) {
         if (!err.message.includes("ignored by .swcrc")) {
             throw err;
         }
