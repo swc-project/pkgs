@@ -4,6 +4,10 @@ import parseArgs, { initProgram } from "./options";
 
 initProgram();
 const opts = parseArgs(process.argv);
+if (!opts) {
+    process.exit(1);
+}
+
 const fn = opts.cliOptions.outDir ? dirCommand : fileCommand;
 
 process.on("uncaughtException", function (err) {
