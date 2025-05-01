@@ -7,8 +7,8 @@
         "prepublishOnly": "pnpm build",
         "types": "tsc",
         "types:watch": "tsc --watch",
-        "build": "swc src --strip-leading-paths -d lib --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
-        "build:watch": "swc src --strip-leading-paths -d lib --watch --ignore '**/*.test.ts' --ignore '**/__mocks__/**'",
+        "build": "tsc",
+        "build:watch": "tsc --watch",
         "format:src": "prettier --write src",
         "format:examples": "prettier --write examples",
         "format": "pnpm format:src && pnpm format:examples",
@@ -67,7 +67,7 @@
         "deepmerge": "^4.2.2",
         "jest": "^29.5.0",
         "ts-jest": "^29.0.5",
-        "typescript": "~4.3.2"
+        "typescript": "~5.8.3"
     },
     "peerDependencies": {
         "@swc/core": "^1.2.66",
