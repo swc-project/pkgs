@@ -23,7 +23,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
-        node-version: [18, 20]
+        node-version: [20, 22]
 
     steps:
       - name: Check out code

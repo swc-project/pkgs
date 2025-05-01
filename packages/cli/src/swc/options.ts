@@ -38,13 +38,13 @@ export const initProgram = () => {
     program.option(
         "--cli-config-file [path]",
         "Path to a JSON file containing CLI options. " +
-            "Options provided directly via command line override the ones in the configuration file."
+        "Options provided directly via command line override the ones in the configuration file."
     );
 
     program.option(
         "--env-name [name]",
         "The name of the 'env' to use when loading configs and plugins. " +
-            "Defaults to the value of SWC_ENV, or else NODE_ENV, or else 'development'."
+        "Defaults to the value of SWC_ENV, or else NODE_ENV, or else 'development'."
     );
 
     program.option("--no-swcrc", "Whether or not to look up .swcrc files");
@@ -341,8 +341,8 @@ export default function parserArgs(args: string[]) {
         if (!Number.isInteger(workers) || workers < 0) {
             errors.push(
                 "--workers must be a positive integer (found " +
-                    opts.workers +
-                    ")"
+                opts.workers +
+                ")"
             );
         }
     }
