@@ -5,7 +5,7 @@ import { stderr } from "process";
 import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
-import { exists, getDest, mapTsExt } from "./util";
+import { exists, getDest, mapTsExt, deepClone } from "./util";
 import handleCompile from "./dirWorker";
 import {
     globSources,
@@ -401,12 +401,16 @@ export default async function dir({
     swcOptions: Options;
     callbacks?: Callbacks;
 }) {
-    const { watch } = cliOptions;
+    // Deep clone the options to ensure full isolation between multiple calls
+    const clonedCliOptions = deepClone(cliOptions);
+    const clonedSwcOptions = deepClone(swcOptions);
 
-    await beforeStartCompilation(cliOptions);
-    await initialCompilation(cliOptions, swcOptions, callbacks);
+    const { watch } = clonedCliOptions;
+
+    await beforeStartCompilation(clonedCliOptions);
+    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
 
     if (watch) {
-        await watchCompilation(cliOptions, swcOptions, callbacks);
+        await watchCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
     }
 }

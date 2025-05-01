@@ -1,7 +1,7 @@
 import slash from "slash";
 import { dirname, relative } from "path";
 import { CompileStatus } from "./constants";
-import { compile, getDest, mapDtsExt, mapTsExt } from "./util";
+import { compile, getDest, mapDtsExt, mapTsExt, deepClone } from "./util";
 import { outputResult } from "./compile";
 
 import type { Options } from "@swc/core";
@@ -15,29 +15,45 @@ export default async function handleCompile(opts: {
     swcOptions: Options;
     outFileExtension?: string;
 }) {
+    // Create a deep clone of the options to prevent shared references
+    const clonedOpts = deepClone(opts);
+
     const dest = getDest(
-        opts.filename,
-        opts.outDir,
-        opts.cliOptions.stripLeadingPaths,
-        `.${opts.outFileExtension ?? mapTsExt(opts.filename)}`
+        clonedOpts.filename,
+        clonedOpts.outDir,
+        clonedOpts.cliOptions.stripLeadingPaths,
+        `.${clonedOpts.outFileExtension ?? mapTsExt(clonedOpts.filename)}`
     );
-    const sourceFileName = slash(relative(dirname(dest), opts.filename));
+    const sourceFileName = slash(relative(dirname(dest), clonedOpts.filename));
 
-    const options = { ...opts.swcOptions, sourceFileName };
+    // Create a fresh copy of the swcOptions
+    const options = deepClone(clonedOpts.swcOptions);
 
-    const result = await compile(opts.filename, options, opts.sync, dest);
+    // Set sourceFileName in the options
+    options.sourceFileName = sourceFileName;
+
+    // Ensure we have the right extension for output files
+    // Instead of directly setting on module.outFileExtension (which might not exist in the type),
+    // we'll pass it separately to the compile function
+
+    const result = await compile(
+        clonedOpts.filename,
+        options,
+        clonedOpts.sync,
+        dest
+    );
 
     if (result) {
         const destDts = getDest(
-            opts.filename,
-            opts.outDir,
-            opts.cliOptions.stripLeadingPaths,
-            `.${mapDtsExt(opts.filename)}`
+            clonedOpts.filename,
+            clonedOpts.outDir,
+            clonedOpts.cliOptions.stripLeadingPaths,
+            `.${mapDtsExt(clonedOpts.filename)}`
         );
         const destSourcemap = dest + ".map";
         await outputResult({
             output: result,
-            sourceFile: opts.filename,
+            sourceFile: clonedOpts.filename,
             destFile: dest,
             destDtsFile: destDts,
             destSourcemapFile: destSourcemap,
