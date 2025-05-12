@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.6
+
+### Patch Changes
+
+- 7ad6cbd: Revert "fix(cli): Fix configuration reuse issue in swcDir() by deep clone"
+
 ## 0.7.4
 
 ### Patch Changes
