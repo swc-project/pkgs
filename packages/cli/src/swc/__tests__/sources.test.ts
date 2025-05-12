@@ -1,9 +1,9 @@
 import { globSources, splitCompilableAndCopyable } from "../sources";
 import fs from "fs";
-import glob from "fast-glob";
+import { glob } from "tinyglobby";
 
 jest.mock("fs");
-jest.mock("fast-glob");
+jest.mock("tinyglobby");
 
 describe("globSources", () => {
     beforeEach(() => {

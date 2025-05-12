@@ -1,4 +1,4 @@
-import glob from "fast-glob";
+import { glob } from "tinyglobby";
 import slash from "slash";
 import { stat } from "fs";
 import { join, basename, extname } from "path";
@@ -13,9 +13,10 @@ export async function globSources(
     ignore: string[],
     includeDotfiles = false
 ): Promise<string[]> {
-    const globConfig: glob.Options = {
+    const globConfig = {
         dot: includeDotfiles,
         ignore,
+        expandDirectories: false,
     };
 
     const files = await Promise.all(
