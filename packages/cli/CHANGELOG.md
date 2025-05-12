@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.7
+
+### Patch Changes
+
+- Fix '@swc/cli'
+
 ## 0.7.6
 
 ### Patch Changes
