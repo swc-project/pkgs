@@ -4,29 +4,6 @@ import { mkdirSync, writeFileSync, promises } from "fs";
 import { dirname, extname, join, relative } from "path";
 import { stderr } from "process";
 
-/**
- * Deep clone an object to ensure no shared references
- * @param obj The object to clone
- * @returns A new deep-cloned object
- */
-export function deepClone<T>(obj: T): T {
-    if (obj === null || typeof obj !== "object") {
-        return obj;
-    }
-
-    if (Array.isArray(obj)) {
-        return (obj.map(item => deepClone(item)) as unknown) as T;
-    }
-
-    const result = {} as T;
-    for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            result[key] = deepClone(obj[key]);
-        }
-    }
-    return result;
-}
-
 export async function exists(path: string): Promise<boolean> {
     let pathExists = true;
     try {
@@ -66,22 +43,11 @@ export async function compile(
     sync: boolean,
     outputPath: string | undefined
 ): Promise<swc.Output | void> {
-    // Deep clone the options to ensure we don't have any shared references
-    opts = deepClone({
+    opts = {
         ...opts,
-    });
-
+    };
     if (outputPath) {
         opts.outputPath = outputPath;
-
-        // Extract the extension from the output path to ensure module resolution uses it
-        const ext = extname(outputPath);
-        if (ext && opts.module && typeof opts.module === "object") {
-            // Force the module to use the correct extension for import path resolution
-            // This explicit setting helps ensure we don't reuse cached module config
-            // @ts-ignore: Adding a custom property that might not be in the type definition
-            opts.module.forcedOutputFileExtension = ext.slice(1); // Remove the leading dot
-        }
     }
 
     try {
