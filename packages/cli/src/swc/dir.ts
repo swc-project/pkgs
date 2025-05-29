@@ -102,7 +102,7 @@ async function initialCompilation(
                     outFileExtension,
                 });
                 results.set(filename, result);
-            } catch (err) {
+            } catch (err: any) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -117,7 +117,7 @@ async function initialCompilation(
                     stripLeadingPaths
                 );
                 results.set(filename, result);
-            } catch (err) {
+            } catch (err: any) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -297,7 +297,7 @@ async function watchCompilation(
             } else if (copyFiles) {
                 await unlink(getDest(filename, outDir, stripLeadingPaths));
             }
-        } catch (err) {
+        } catch (err: any) {
             if (err.code !== "ENOENT") {
                 console.error(err.stack);
             }
@@ -338,7 +338,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error) {
+                } catch (error: any) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
@@ -377,7 +377,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error) {
+                } catch (error: any) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
