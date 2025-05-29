@@ -1,6 +1,6 @@
 {
     "name": "swc-extra-packages-workspace",
-    "packageManager": "pnpm@8.6.7",
+    "packageManager": "pnpm@9.15.9",
     "private": true,
     "funding": {
         "type": "opencollective",
