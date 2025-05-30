@@ -82,6 +82,9 @@ A: By default, the version supported by your Node runtime.
 | 15           | 'es2021'             |
 | 16           | 'es2021'             |
 | 17           | 'es2022'             |
+| 18           | 'es2023'             |
+| 19           | 'es2023'             |
+| 20           | 'es2023'             |
 
 You can customize this by setting an explicit version in `jest.config.js`:
 

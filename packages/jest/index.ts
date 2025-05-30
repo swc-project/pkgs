@@ -4,7 +4,8 @@ import * as path from "path";
 import * as process from "process";
 import getCacheKeyFunction from "@jest/create-cache-key-function";
 import type { Transformer, TransformOptions } from "@jest/transform";
-import { parse as parseJsonC, type ParseError } from "jsonc-parser";
+import { parse as parseJsonC } from "jsonc-parser";
+import type { ParseError } from "jsonc-parser";
 import {
     transformSync,
     transform,
@@ -114,22 +115,6 @@ function getOptionsFromSwrc(): Options {
     return {};
 }
 
-const nodeTargetDefaults = new Map([
-    ["12", "es2018"],
-    ["13", "es2019"],
-    ["14", "es2020"],
-    ["15", "es2021"],
-    ["16", "es2021"],
-    ["17", "es2022"],
-    ["18", "es2022"],
-    ["19", "es2022"],
-    ["20", "es2022"],
-    // TODO: Use es2023 once @swc/core supports it
-    // ['18', 'es2023'],
-    // ['19', 'es2023'],
-    // ['20', 'es2023'],
-]);
-
 function buildSwcTransformOpts(
     swcOptions: (Options & { experimental?: unknown }) | undefined
 ): Options {
@@ -140,13 +125,7 @@ function buildSwcTransformOpts(
             : (getOptionsFromSwrc() as Options & { experimental?: unknown });
 
     if (!computedSwcOptions.env && !computedSwcOptions.jsc?.target) {
-        set(
-            computedSwcOptions,
-            "jsc.target",
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            nodeTargetDefaults.get(process.version?.match(/v(\d+)/)![1]) ||
-                "es2018"
-        );
+        set(computedSwcOptions, "jsc.target", nodeTarget());
     }
 
     set(computedSwcOptions, "jsc.transform.hidden.jest", true);
@@ -164,6 +143,28 @@ function buildSwcTransformOpts(
     }
 
     return computedSwcOptions;
+}
+
+// Ordered list of which target a node version should use.
+// Each entry is the lowest version that can use that target.
+const nodeTargetDefaults = [
+    [18, "es2023"],
+    [17, "es2022"],
+    [15, "es2021"],
+    [14, "es2020"],
+    [13, "es2019"],
+] as const;
+
+function nodeTarget() {
+    const match = process.version.match(/v(\d+)/);
+    if (match == null)
+        throw Error(`Could not parse major version from ${process.version}`);
+    const majorVersion = parseInt(match[1]);
+    return (
+        nodeTargetDefaults.find(
+            ([minVersion]) => majorVersion >= minVersion
+        )?.[1] || "es2018"
+    );
 }
 
 function insertInstrumentationOptions(
@@ -194,12 +195,9 @@ function insertInstrumentationOptions(
                 ...(swcTransformOpts?.jsc?.experimental ?? {}),
                 plugins: [
                     ...(swcTransformOpts?.jsc?.experimental?.plugins ?? []),
-                    [
-                        "swc-plugin-coverage-instrument",
-                        instrumentOptions ?? {},
-                    ],
-                ]
-            }
+                    ["swc-plugin-coverage-instrument", instrumentOptions ?? {}],
+                ],
+            },
         },
     };
 }
