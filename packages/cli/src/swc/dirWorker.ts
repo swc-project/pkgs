@@ -23,7 +23,10 @@ export default async function handleCompile(opts: {
     );
     const sourceFileName = slash(relative(dirname(dest), opts.filename));
 
-    const options = { ...opts.swcOptions, sourceFileName };
+    // Create a deep copy of the options to prevent mutation affecting other compilations
+    const options = JSON.parse(
+        JSON.stringify({ ...opts.swcOptions, sourceFileName })
+    );
 
     const result = await compile(opts.filename, options, opts.sync, dest);
 

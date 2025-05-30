@@ -102,7 +102,7 @@ async function initialCompilation(
                     outFileExtension,
                 });
                 results.set(filename, result);
-            } catch (err: any) {
+            } catch (err) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -117,7 +117,7 @@ async function initialCompilation(
                     stripLeadingPaths
                 );
                 results.set(filename, result);
-            } catch (err: any) {
+            } catch (err) {
                 if (!callbacks?.onFail) {
                     console.error(err.message);
                 }
@@ -297,7 +297,7 @@ async function watchCompilation(
             } else if (copyFiles) {
                 await unlink(getDest(filename, outDir, stripLeadingPaths));
             }
-        } catch (err: any) {
+        } catch (err) {
             if (err.code !== "ENOENT") {
                 console.error(err.stack);
             }
@@ -338,7 +338,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error: any) {
+                } catch (error) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
@@ -377,7 +377,7 @@ async function watchCompilation(
                             );
                         }
                     }
-                } catch (error: any) {
+                } catch (error) {
                     if (callbacks?.onFail) {
                         const reasons = new Map<string, string>();
                         reasons.set(filename, error.message);
@@ -401,12 +401,27 @@ export default async function dir({
     swcOptions: Options;
     callbacks?: Callbacks;
 }) {
-    const { watch } = cliOptions;
+    // Deep clone the configuration objects to prevent reuse between calls
+    const clonedCliOptions = JSON.parse(JSON.stringify(cliOptions));
+    const clonedSwcOptions = JSON.parse(JSON.stringify(swcOptions));
 
-    await beforeStartCompilation(cliOptions);
-    await initialCompilation(cliOptions, swcOptions, callbacks);
+    await beforeStartCompilation(clonedCliOptions);
 
-    if (watch) {
-        await watchCompilation(cliOptions, swcOptions, callbacks);
+    if (!clonedCliOptions.watch) {
+        return initialCompilation(
+            clonedCliOptions,
+            clonedSwcOptions,
+            callbacks
+        );
     }
+
+    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
+
+    const watcher = await watchCompilation(
+        clonedCliOptions,
+        clonedSwcOptions,
+        callbacks
+    );
+
+    return watcher;
 }
