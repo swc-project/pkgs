@@ -1,5 +1,11 @@
 # @swc/jest
 
+## 0.2.39
+
+### Patch Changes
+
+-   601df42: Update default jsc.target for node 22 and future versions
+
 ## 0.2.38
 
 ### Patch Changes
