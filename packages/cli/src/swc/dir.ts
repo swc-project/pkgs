@@ -401,12 +401,20 @@ export default async function dir({
     swcOptions: Options;
     callbacks?: Callbacks;
 }) {
-    const { watch } = cliOptions;
+    // Deep clone the configuration objects to prevent reuse between calls
+    const clonedCliOptions = JSON.parse(JSON.stringify(cliOptions));
+    const clonedSwcOptions = JSON.parse(JSON.stringify(swcOptions));
 
-    await beforeStartCompilation(cliOptions);
-    await initialCompilation(cliOptions, swcOptions, callbacks);
+    await beforeStartCompilation(clonedCliOptions);
 
-    if (watch) {
-        await watchCompilation(cliOptions, swcOptions, callbacks);
+    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
+
+    if (clonedCliOptions.watch) {
+        const watcher = await watchCompilation(
+            clonedCliOptions,
+            clonedSwcOptions,
+            callbacks
+        );
+        return watcher;
     }
 }
