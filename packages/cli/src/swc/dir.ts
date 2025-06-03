@@ -407,21 +407,14 @@ export default async function dir({
 
     await beforeStartCompilation(clonedCliOptions);
 
-    if (!clonedCliOptions.watch) {
-        return initialCompilation(
+    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
+
+    if (clonedCliOptions.watch) {
+        const watcher = await watchCompilation(
             clonedCliOptions,
             clonedSwcOptions,
             callbacks
         );
+        return watcher;
     }
-
-    await initialCompilation(clonedCliOptions, clonedSwcOptions, callbacks);
-
-    const watcher = await watchCompilation(
-        clonedCliOptions,
-        clonedSwcOptions,
-        callbacks
-    );
-
-    return watcher;
 }
