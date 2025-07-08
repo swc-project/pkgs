@@ -26,18 +26,18 @@
         "@swc/core": "*"
     },
     "dependencies": {
-        "@jest/create-cache-key-function": "^29.7.0",
+        "@jest/create-cache-key-function": "^30.0.0",
         "@swc/counter": "workspace:^",
         "jsonc-parser": "^3.2.0"
     },
     "devDependencies": {
-        "@jest/transform": "^27.5.1",
+        "@jest/transform": "^30.0.0",
         "@swc/core": "^1.6.4",
         "@types/node": "^16.11.12",
         "@typescript-eslint/eslint-plugin": "^5.6.0",
         "@typescript-eslint/parser": "^5.6.0",
         "eslint": "^8.4.1",
-        "jest": "^27.4.4",
+        "jest": "^30.0.0",
         "typescript": "^5.8.3"
     },
     "engines": {
