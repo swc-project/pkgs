@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.8
+
+### Patch Changes
+
+- d78cdb0: chore(cli): Switch to tinyglobby
+
 ## 0.7.7
 
 ### Patch Changes
