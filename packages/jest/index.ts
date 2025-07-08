@@ -78,7 +78,6 @@ function createTransformer(
         },
 
         getCacheKey(src, filename, ...rest) {
-            // @ts-expect-error - type overload is confused
             const baseCacheKey = cacheKeyFunction(src, filename, ...rest);
 
             const options: TransformOptions =
