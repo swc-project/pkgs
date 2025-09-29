@@ -114,16 +114,17 @@ export async function watchSources(
     ignore: string[] = []
 ) {
     const chokidar = await requireChokidar();
-    const sourceFiles = await globSources(
-        sources,
-        only,
-        ignore,
-        includeDotfiles
-    );
-    return chokidar.watch(sourceFiles, {
-        ignored: includeDotfiles
-            ? undefined
-            : (filename: string) => basename(filename).startsWith("."),
+    return chokidar.watch(sources, {
+        ignored: (filename: string) => {
+            if (!includeDotfiles && basename(filename).startsWith(".")) {
+                return true;
+            }
+            if (ignore.some(ignore => minimatch(slash(filename), ignore))) {
+                return true;
+            }
+
+            return only.length > 0 && !only.some(only => minimatch(slash(filename), only));
+        },
         ignoreInitial: true,
         awaitWriteFinish: {
             stabilityThreshold: 50,
