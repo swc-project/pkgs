@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.9
+
+### Patch Changes
+
+- 972c887: fix(cli): Include newly added files in watch mode
+
 ## 0.7.8
 
 ### Patch Changes
