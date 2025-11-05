@@ -25,6 +25,10 @@ jobs:
           corepack enable
           pnpm i
 
+      # Ensure npm 11.5.1 or later is installed (for trusted publishing)
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -32,4 +36,3 @@ jobs:
           publish: pnpm publish -r --access public
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
