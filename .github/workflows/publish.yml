@@ -9,6 +9,10 @@ on:
 env:
   CI: 1
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   publish-npm:
     name: Publish to npm
@@ -20,6 +24,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 20
+          registry-url: "https://registry.npmjs.org"
 
       - run: |
           corepack enable
