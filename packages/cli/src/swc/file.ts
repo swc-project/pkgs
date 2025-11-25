@@ -94,7 +94,7 @@ export default async function ({
     }
 
     async function handle(filename: string) {
-        const sourceFileName = slash(
+        const sourceFileName = swcOptions.sourceFileName ?? slash(
             cliOptions.outFile
                 ? path.relative(path.dirname(cliOptions.outFile), filename)
                 : filename
