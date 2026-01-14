@@ -1,7 +1,7 @@
 const swc = require("@swc/core");
 
 function makeLoader() {
-    return function (source, inputSourceMap) {
+    return function (source, inputSourceMap, extra) {
         // Make the loader async
         const callback = this.async();
         const filename = this.resourcePath;
@@ -91,7 +91,8 @@ function makeLoader() {
                 callback(
                     null,
                     output.code,
-                    parseMap ? JSON.parse(output.map) : output.map
+                    parseMap ? JSON.parse(output.map) : output.map,
+                    extra
                 );
             } else {
                 swc.transform(source, programmaticOptions).then(
@@ -99,7 +100,8 @@ function makeLoader() {
                         callback(
                             null,
                             output.code,
-                            parseMap ? JSON.parse(output.map) : output.map
+                            parseMap ? JSON.parse(output.map) : output.map,
+                            extra
                         );
                     },
                     (err) => {
