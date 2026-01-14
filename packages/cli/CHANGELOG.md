@@ -1,5 +1,11 @@
 # @swc/cli
 
+## 0.7.10
+
+### Patch Changes
+
+- ad417fa: Fix issue with ignoring --source-file-name by CLI
+
 ## 0.7.9
 
 ### Patch Changes

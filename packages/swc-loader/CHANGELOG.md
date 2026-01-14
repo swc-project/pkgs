@@ -1,5 +1,11 @@
 # swc-loader
 
+## 0.2.7
+
+### Patch Changes
+
+-   e697872: Pass through incoming extra build info to output
+
 ## 0.2.6
 
 ### Patch Changes
