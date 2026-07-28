@@ -20,7 +20,8 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/swc-project/pkgs.git"
+        "url": "git+https://github.com/swc-project/pkgs.git",
+        "directory": "packages/jest"
     },
     "peerDependencies": {
         "@swc/core": "*"
