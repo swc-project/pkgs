@@ -156,26 +156,28 @@ async function initialCompilation(
                     handleCopy(file, outDir, stripLeadingPaths)
                 )
             ),
-        ]).then(([compiled, copied]) => {
-            compiled.forEach((result, index) => {
-                const filename = compilable[index];
-                if (result.status === "fulfilled") {
-                    results.set(filename, result.value);
-                } else {
-                    results.set(filename, CompileStatus.Failed);
-                    reasons.set(filename, result.reason.message);
-                }
-            });
+        ])
+            .then(([compiled, copied]) => {
+                compiled.forEach((result, index) => {
+                    const filename = compilable[index];
+                    if (result.status === "fulfilled") {
+                        results.set(filename, result.value);
+                    } else {
+                        results.set(filename, CompileStatus.Failed);
+                        reasons.set(filename, result.reason.message);
+                    }
+                });
 
-            copied.forEach((result, index) => {
-                const filename = copyable[index];
-                if (result.status === "fulfilled") {
-                    results.set(filename, result.value);
-                } else {
-                    results.set(filename, CompileStatus.Failed);
-                }
-            });
-        });
+                copied.forEach((result, index) => {
+                    const filename = copyable[index];
+                    if (result.status === "fulfilled") {
+                        results.set(filename, result.value);
+                    } else {
+                        results.set(filename, CompileStatus.Failed);
+                    }
+                });
+            })
+            .finally(() => workers.destroy());
     }
     const end = process.hrtime(start);
 
