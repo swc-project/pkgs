@@ -3,8 +3,9 @@ import { promises } from "fs";
 import { dirname, relative } from "path";
 import { transformFile, transformFileSync } from "@swc/core";
 import type { Options, Output } from "@swc/core";
+import { writeFileAtomicallyIfChanged } from "./util";
 
-const { mkdir, stat, writeFile } = promises;
+const { mkdir, stat } = promises;
 
 function withSourceMap(
     output: Output,
@@ -78,14 +79,14 @@ export async function outputResult({
     const { mode } = await stat(sourceFile);
 
     const dtsPromise = dts
-        ? writeFile(destDtsFile, dts, { mode })
+        ? writeFileAtomicallyIfChanged(destDtsFile, dts, { mode })
         : Promise.resolve();
     const sourceMapPromise = sourceMap
-        ? writeFile(destSourcemapFile, sourceMap, { mode })
+        ? writeFileAtomicallyIfChanged(destSourcemapFile, sourceMap, { mode })
         : Promise.resolve();
 
     await Promise.all([
-        writeFile(destFile, sourceCode, { mode }),
+        writeFileAtomicallyIfChanged(destFile, sourceCode, { mode }),
         dtsPromise,
         sourceMapPromise,
     ]);

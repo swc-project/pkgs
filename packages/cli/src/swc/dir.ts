@@ -5,7 +5,7 @@ import { stderr } from "process";
 import { format } from "util";
 import { CompileStatus } from "./constants";
 import { Callbacks, CliOptions } from "./options";
-import { exists, getDest, mapTsExt } from "./util";
+import { copyFileAtomicallyIfChanged, exists, getDest, mapTsExt } from "./util";
 import handleCompile from "./dirWorker";
 import {
     globSources,
@@ -26,7 +26,7 @@ declare module "fs" {
     }
 }
 
-const { mkdir, rmdir, rm, copyFile, unlink } = promises;
+const { mkdir, rmdir, rm, unlink } = promises;
 
 const recursive = { recursive: true };
 
@@ -39,7 +39,7 @@ async function handleCopy(
     const dir = dirname(dest);
 
     await mkdir(dir, recursive);
-    await copyFile(filename, dest);
+    await copyFileAtomicallyIfChanged(filename, dest);
 
     return CompileStatus.Copied;
 }
