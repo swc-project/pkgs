@@ -50,7 +50,7 @@
         "@swc/counter": "workspace:^",
         "@xhmikosr/bin-wrapper": "^14.0.0",
         "commander": "^8.3.0",
-        "minimatch": "^9.0.3",
+        "minimatch": "^10.2.5",
         "piscina": "^4.3.1",
         "semver": "^7.3.8",
         "slash": "3.0.0",
