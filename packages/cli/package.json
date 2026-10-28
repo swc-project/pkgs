@@ -59,7 +59,7 @@
         "write-file-atomic": "^7.0.1"
     },
     "devDependencies": {
-        "@swc/cli": "0.8.2",
+        "@swc/cli": "workspace:*",
         "@swc/core": "^1.6.4",
         "@swc/jest": "workspace:^",
         "@swc/types": "^0.1.9",
