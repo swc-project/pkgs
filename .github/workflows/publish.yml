@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Let Changesets authenticate Git pushes with BOT_GH_TOKEN.
+          persist-credentials: false
 
       - name: Setup node
         uses: actions/setup-node@v4
