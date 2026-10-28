@@ -43,4 +43,5 @@ jobs:
         uses: changesets/action@v1
         with:
           github-token: ${{ github.token }}
+          version: pnpm exec changeset version && pnpm install --lockfile-only --no-frozen-lockfile
           publish: pnpm publish -r --access public
