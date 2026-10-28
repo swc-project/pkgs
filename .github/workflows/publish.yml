@@ -11,7 +11,8 @@ env:
 
 permissions:
   id-token: write # Required for OIDC
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   publish-npm:
@@ -20,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Let Changesets authenticate Git pushes with BOT_GH_TOKEN.
+          # Let Changesets configure authentication for Git pushes.
           persist-credentials: false
 
       - name: Setup node
@@ -41,6 +42,5 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
+          github-token: ${{ github.token }}
           publish: pnpm publish -r --access public
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
