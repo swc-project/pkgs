@@ -35,12 +35,12 @@
         ]
     },
     "devDependencies": {
-        "@changesets/cli": "^2.27.1",
+        "@changesets/cli": "^2.31.1",
         "@taplo/cli": "^0.5.2",
         "cross-env": "^7.0.3",
-        "cspell": "^6.31.1",
+        "cspell": "^6.31.3",
         "husky": "^8.0.3",
-        "lerna": "^8.0.2",
+        "lerna": "^9.0.7",
         "lint-staged": "^13.2.3",
         "prettier": "^2"
     }

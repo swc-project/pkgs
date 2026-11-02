@@ -13,7 +13,7 @@
     "private": false,
     "devDependencies": {
         "@swc/core": "^1.6.4",
-        "webpack": "^5.69.1"
+        "webpack": "^5.104.1"
     },
     "peerDependencies": {
         "@swc/core": "^1.2.147",
