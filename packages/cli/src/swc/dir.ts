@@ -131,51 +131,57 @@ async function initialCompilation(
             concurrentTasksPerWorker: 2,
         });
 
-        await Promise.all([
-            Promise.allSettled(
-                compilable.map(filename =>
-                    workers
-                        .run({
-                            filename,
-                            outDir,
-                            sync,
-                            cliOptions,
-                            swcOptions,
-                            outFileExtension,
-                        })
-                        .catch(err => {
-                            if (!callbacks?.onFail) {
-                                console.error(err.message);
-                            }
-                            throw err;
-                        })
-                )
-            ),
-            Promise.allSettled(
-                copyable.map(file =>
-                    handleCopy(file, outDir, stripLeadingPaths)
-                )
-            ),
-        ]).then(([compiled, copied]) => {
-            compiled.forEach((result, index) => {
-                const filename = compilable[index];
-                if (result.status === "fulfilled") {
-                    results.set(filename, result.value);
-                } else {
-                    results.set(filename, CompileStatus.Failed);
-                    reasons.set(filename, result.reason.message);
-                }
-            });
+        try {
+            await Promise.all([
+                Promise.allSettled(
+                    compilable.map(filename =>
+                        workers
+                            .run({
+                                filename,
+                                outDir,
+                                sync,
+                                cliOptions,
+                                swcOptions,
+                                outFileExtension,
+                            })
+                            .catch(err => {
+                                if (!callbacks?.onFail) {
+                                    console.error(err.message);
+                                }
+                                throw err;
+                            })
+                    )
+                ),
+                Promise.allSettled(
+                    copyable.map(file =>
+                        handleCopy(file, outDir, stripLeadingPaths)
+                    )
+                ),
+            ]).then(([compiled, copied]) => {
+                compiled.forEach((result, index) => {
+                    const filename = compilable[index];
+                    if (result.status === "fulfilled") {
+                        results.set(filename, result.value);
+                    } else {
+                        results.set(filename, CompileStatus.Failed);
+                        reasons.set(filename, result.reason.message);
+                    }
+                });
 
-            copied.forEach((result, index) => {
-                const filename = copyable[index];
-                if (result.status === "fulfilled") {
-                    results.set(filename, result.value);
-                } else {
-                    results.set(filename, CompileStatus.Failed);
-                }
+                copied.forEach((result, index) => {
+                    const filename = copyable[index];
+                    if (result.status === "fulfilled") {
+                        results.set(filename, result.value);
+                    } else {
+                        results.set(filename, CompileStatus.Failed);
+                    }
+                });
             });
-        });
+        } finally {
+            // Release the worker threads so library consumers that call
+            // `swcDir()` repeatedly do not leak a pool per invocation.
+            await workers.destroy();
+        }
     }
     const end = process.hrtime(start);
 
